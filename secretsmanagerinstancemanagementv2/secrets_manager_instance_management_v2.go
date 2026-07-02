@@ -15,7 +15,7 @@
  */
 
 /*
- * IBM OpenAPI SDK Code Generator Version: 3.114.0-a902401e-20260427-192904
+ * IBM OpenAPI SDK Code Generator Version: 3.114.4-9b56d441-20260612-210048
  */
 
 // Package secretsmanagerinstancemanagementv2 : Operations and models for the SecretsManagerInstanceManagementV2 service
@@ -469,10 +469,13 @@ func (options *GetInstanceOptions) SetHeaders(param map[string]string) *GetInsta
 	return options
 }
 
-// Instance : Instance.
+// Instance : The service instance information.
 type Instance struct {
-	// Instance metadata for Vault Dedicated instances.
-	Instance *VaultDedicatedInstanceMetadata `json:"instance" validate:"required"`
+	// The instance CRN identifier.
+	InstanceCrn *string `json:"instance_crn" validate:"required"`
+
+	// Instance plan name.
+	Plan *string `json:"plan" validate:"required"`
 
 	// Vault cluster information for Vault Dedicated instances.
 	VaultCluster *VaultDedicatedCluster `json:"vault_cluster" validate:"required"`
@@ -484,12 +487,23 @@ type Instance struct {
 	Encryption *VaultDedicatedInstanceEncryption `json:"encryption" validate:"required"`
 }
 
+// Constants associated with the Instance.Plan property.
+// Instance plan name.
+const (
+	Instance_Plan_Dedicated = "dedicated"
+)
+
 // UnmarshalInstance unmarshals an instance of Instance from the specified map of raw messages.
 func UnmarshalInstance(m map[string]json.RawMessage, result interface{}) (err error) {
 	obj := new(Instance)
-	err = core.UnmarshalModel(m, "instance", &obj.Instance, UnmarshalVaultDedicatedInstanceMetadata)
+	err = core.UnmarshalPrimitive(m, "instance_crn", &obj.InstanceCrn)
 	if err != nil {
-		err = core.SDKErrorf(err, "", "instance-error", common.GetComponentInfo())
+		err = core.SDKErrorf(err, "", "instance_crn-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "plan", &obj.Plan)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "plan-error", common.GetComponentInfo())
 		return
 	}
 	err = core.UnmarshalModel(m, "vault_cluster", &obj.VaultCluster, UnmarshalVaultDedicatedCluster)
@@ -656,58 +670,6 @@ func UnmarshalVaultDedicatedInstanceEndpoints(m map[string]json.RawMessage, resu
 	err = core.UnmarshalModel(m, "private", &obj.Private, UnmarshalVaultDedicatedEndpointsData)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "private-error", common.GetComponentInfo())
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// VaultDedicatedInstanceMetadata : Instance metadata for Vault Dedicated instances.
-type VaultDedicatedInstanceMetadata struct {
-	// The instance CRN identifier.
-	ID *string `json:"id" validate:"required"`
-
-	// Instance plan information.
-	Plan *VaultDedicatedInstancePlan `json:"plan" validate:"required"`
-}
-
-// UnmarshalVaultDedicatedInstanceMetadata unmarshals an instance of VaultDedicatedInstanceMetadata from the specified map of raw messages.
-func UnmarshalVaultDedicatedInstanceMetadata(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(VaultDedicatedInstanceMetadata)
-	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
-		return
-	}
-	err = core.UnmarshalModel(m, "plan", &obj.Plan, UnmarshalVaultDedicatedInstancePlan)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "plan-error", common.GetComponentInfo())
-		return
-	}
-	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
-	return
-}
-
-// VaultDedicatedInstancePlan : Instance plan information.
-type VaultDedicatedInstancePlan struct {
-	// The plan name of this instance.
-	Name *string `json:"name" validate:"required"`
-}
-
-// Constants associated with the VaultDedicatedInstancePlan.Name property.
-// The plan name of this instance.
-const (
-	VaultDedicatedInstancePlan_Name_Dedicated = "dedicated"
-	VaultDedicatedInstancePlan_Name_Standard = "standard"
-	VaultDedicatedInstancePlan_Name_Trial = "trial"
-)
-
-// UnmarshalVaultDedicatedInstancePlan unmarshals an instance of VaultDedicatedInstancePlan from the specified map of raw messages.
-func UnmarshalVaultDedicatedInstancePlan(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(VaultDedicatedInstancePlan)
-	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
