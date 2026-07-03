@@ -107,7 +107,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Examples Tests`, func() {
 			// begin-create_vault_admintoken
 
 			createVaultAdmintokenOptions := secretsManagerInstanceManagementService.NewCreateVaultAdmintokenOptions(
-				"60b40daa-1fd3-4f35-a994-2409cc0f270c",
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
 			)
 
 			token, response, err := secretsManagerInstanceManagementService.CreateVaultAdmintoken(createVaultAdmintokenOptions)
@@ -128,7 +128,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Examples Tests`, func() {
 			// begin-get_instance
 
 			getInstanceOptions := secretsManagerInstanceManagementService.NewGetInstanceOptions(
-				"60b40daa-1fd3-4f35-a994-2409cc0f270c",
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
 			)
 
 			instance, response, err := secretsManagerInstanceManagementService.GetInstance(getInstanceOptions)
@@ -148,7 +148,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Examples Tests`, func() {
 			// begin-delete_instance_admintokens
 
 			deleteInstanceAdmintokensOptions := secretsManagerInstanceManagementService.NewDeleteInstanceAdmintokensOptions(
-				"60b40daa-1fd3-4f35-a994-2409cc0f270c",
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
 			)
 
 			response, err := secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions)
