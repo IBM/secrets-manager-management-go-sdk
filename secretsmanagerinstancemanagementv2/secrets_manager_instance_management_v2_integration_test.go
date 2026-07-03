@@ -97,7 +97,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 		It(`CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions)`, func() {
 			createVaultAdmintokenOptions := &secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions{
-				InstanceID: core.StringPtr("60b40daa-1fd3-4f35-a994-2409cc0f270c"),
+				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
 			}
 
 			token, response, err := secretsManagerInstanceManagementService.CreateVaultAdmintoken(createVaultAdmintokenOptions)
@@ -113,7 +113,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 		It(`GetInstance(getInstanceOptions *GetInstanceOptions)`, func() {
 			getInstanceOptions := &secretsmanagerinstancemanagementv2.GetInstanceOptions{
-				InstanceID: core.StringPtr("60b40daa-1fd3-4f35-a994-2409cc0f270c"),
+				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
 			}
 
 			instance, response, err := secretsManagerInstanceManagementService.GetInstance(getInstanceOptions)
@@ -129,7 +129,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 		It(`DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions *DeleteInstanceAdmintokensOptions)`, func() {
 			deleteInstanceAdmintokensOptions := &secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions{
-				InstanceID: core.StringPtr("60b40daa-1fd3-4f35-a994-2409cc0f270c"),
+				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
 			}
 
 			response, err := secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions)
