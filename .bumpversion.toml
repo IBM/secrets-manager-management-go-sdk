@@ -1,0 +1,10 @@
+[tool.bumpversion]
+current_version = "2.0.0"
+commit = false
+tag = false
+allow_dirty = true
+
+[[tool.bumpversion.files]]
+filename = "common/common.go"
+search = 'sdkVersion = "{current_version}"'
+replace = 'sdkVersion = "{new_version}"'
