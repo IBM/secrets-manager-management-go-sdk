@@ -10,7 +10,7 @@ import (
 
 const (
 	sdkName    = "secrets-manager-vaas-go-sdk"
-	sdkVersion = "2.0.0"
+	sdkVersion = "2.0.3"
 )
 
 // GetComponentInfo returns the name and version of this module
