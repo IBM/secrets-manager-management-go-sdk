@@ -5,7 +5,7 @@ go 1.25.0
 replace github.com/IBM/secrets-manager-management-go-sdk/v2/common => ./common
 
 require (
-	github.com/IBM/go-sdk-core/v5 v5.22.1
+	github.com/IBM/go-sdk-core/v5 v5.23.1
 	github.com/go-openapi/strfmt v0.26.4
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.42.1
