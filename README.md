@@ -1,4 +1,4 @@
-# IBM Cloud Secrets Manager Management Go SDK
+# IBM Cloud Secrets Manager Instance Management Go SDK
 A Go client library to interact with the IBM Cloud® Secrets Manager Instance Management APIs.
 
 > **Important:** This SDK is for use with instances of the IBM Cloud Secrets Manager **Vault Enterprise plan only**. It is not compatible with other Secrets Manager plans.
