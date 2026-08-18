@@ -91,13 +91,13 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 	})
 
-	Describe(`CreateVaultAdmintoken - Generate admin token`, func() {
+	Describe(`CreateVaultAdmintoken - Create admin token`, func() {
 		BeforeEach(func() {
 			shouldSkipTest()
 		})
 		It(`CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions)`, func() {
 			createVaultAdmintokenOptions := &secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions{
-				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
+				ID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
 			}
 
 			token, response, err := secretsManagerInstanceManagementService.CreateVaultAdmintoken(createVaultAdmintokenOptions)
@@ -113,7 +113,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 		It(`GetInstance(getInstanceOptions *GetInstanceOptions)`, func() {
 			getInstanceOptions := &secretsmanagerinstancemanagementv2.GetInstanceOptions{
-				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
+				ID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
 			}
 
 			instance, response, err := secretsManagerInstanceManagementService.GetInstance(getInstanceOptions)
@@ -123,16 +123,101 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 	})
 
-	Describe(`DeleteInstanceAdmintokens - Revoke admin tokens`, func() {
+	Describe(`ListInstanceDestinations - List destinations`, func() {
+		BeforeEach(func() {
+			shouldSkipTest()
+		})
+		It(`ListInstanceDestinations(listInstanceDestinationsOptions *ListInstanceDestinationsOptions)`, func() {
+			listInstanceDestinationsOptions := &secretsmanagerinstancemanagementv2.ListInstanceDestinationsOptions{
+				InstanceID: core.StringPtr("1cc9aca6-b6cb-4de8-9a33-0dc2f6fc619e"),
+				State: core.StringPtr("not_started"),
+			}
+
+			destinationCollection, response, err := secretsManagerInstanceManagementService.ListInstanceDestinations(listInstanceDestinationsOptions)
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(200))
+			Expect(destinationCollection).ToNot(BeNil())
+		})
+	})
+
+	Describe(`CreateInstanceDestination - Create destination`, func() {
+		BeforeEach(func() {
+			shouldSkipTest()
+		})
+		It(`CreateInstanceDestination(createInstanceDestinationOptions *CreateInstanceDestinationOptions)`, func() {
+			createInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions{
+				InstanceID: core.StringPtr("1cc9aca6-b6cb-4de8-9a33-0dc2f6fc619e"),
+				Name: core.StringPtr("my-postgres"),
+				Type: core.StringPtr("ibm_cloud_database"),
+				Description: core.StringPtr("Production PostgreSQL database"),
+				Crn: core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::"),
+			}
+
+			response, err := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptions)
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(201))
+		})
+	})
+
+	Describe(`GetInstanceDestination - Get destination details`, func() {
+		BeforeEach(func() {
+			shouldSkipTest()
+		})
+		It(`GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions)`, func() {
+			getInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions{
+				InstanceID: core.StringPtr("1cc9aca6-b6cb-4de8-9a33-0dc2f6fc619e"),
+				DestinationID: core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+			}
+
+			response, err := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptions)
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(200))
+		})
+	})
+
+	Describe(`UpdateInstanceDestination - Update destination`, func() {
+		BeforeEach(func() {
+			shouldSkipTest()
+		})
+		It(`UpdateInstanceDestination(updateInstanceDestinationOptions *UpdateInstanceDestinationOptions)`, func() {
+			updateInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions{
+				InstanceID: core.StringPtr("1cc9aca6-b6cb-4de8-9a33-0dc2f6fc619e"),
+				DestinationID: core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+				RequestBody: map[string]interface{}{"anyKey": "anyValue"},
+			}
+
+			response, err := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptions)
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(200))
+		})
+	})
+
+	Describe(`DeleteInstanceAdmintokens - Delete admin tokens`, func() {
 		BeforeEach(func() {
 			shouldSkipTest()
 		})
 		It(`DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions *DeleteInstanceAdmintokensOptions)`, func() {
 			deleteInstanceAdmintokensOptions := &secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions{
-				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
+				ID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
 			}
 
 			response, err := secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions)
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(204))
+		})
+	})
+
+	Describe(`DeleteInstanceDestination - Delete destination`, func() {
+		BeforeEach(func() {
+			shouldSkipTest()
+		})
+		It(`DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions)`, func() {
+			deleteInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions{
+				InstanceID: core.StringPtr("1cc9aca6-b6cb-4de8-9a33-0dc2f6fc619e"),
+				DestinationID: core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+			}
+
+			response, err := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptions)
 			Expect(err).To(BeNil())
 			Expect(response.StatusCode).To(Equal(204))
 		})

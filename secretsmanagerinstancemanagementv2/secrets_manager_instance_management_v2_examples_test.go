@@ -144,6 +144,94 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Examples Tests`, func() {
 			Expect(response.StatusCode).To(Equal(200))
 			Expect(instance).ToNot(BeNil())
 		})
+		It(`ListInstanceDestinations request example`, func() {
+			fmt.Println("\nListInstanceDestinations() result:")
+			// begin-list_instance_destinations
+
+			listInstanceDestinationsOptions := secretsManagerInstanceManagementService.NewListInstanceDestinationsOptions(
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
+			)
+
+			destinationCollection, response, err := secretsManagerInstanceManagementService.ListInstanceDestinations(listInstanceDestinationsOptions)
+			if err != nil {
+				panic(err)
+			}
+			b, _ := json.MarshalIndent(destinationCollection, "", "  ")
+			fmt.Println(string(b))
+
+			// end-list_instance_destinations
+
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(200))
+			Expect(destinationCollection).ToNot(BeNil())
+		})
+		It(`CreateInstanceDestination request example`, func() {
+			// begin-create_instance_destination
+
+			createInstanceDestinationOptions := secretsManagerInstanceManagementService.NewCreateInstanceDestinationOptions(
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
+			)
+			createInstanceDestinationOptions.SetName("my-postgres")
+			createInstanceDestinationOptions.SetType("ibm_cloud_database")
+			createInstanceDestinationOptions.SetDescription("Production PostgreSQL database")
+			createInstanceDestinationOptions.SetCrn("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+
+			response, err := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptions)
+			if err != nil {
+				panic(err)
+			}
+			if response.StatusCode != 201 {
+				fmt.Printf("\nUnexpected response status code received from CreateInstanceDestination(): %d\n", response.StatusCode)
+			}
+
+			// end-create_instance_destination
+
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(201))
+		})
+		It(`GetInstanceDestination request example`, func() {
+			// begin-get_instance_destination
+
+			getInstanceDestinationOptions := secretsManagerInstanceManagementService.NewGetInstanceDestinationOptions(
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
+				"b2c3d4e5-f6a7-8901-bcde-f12345678901",
+			)
+
+			response, err := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptions)
+			if err != nil {
+				panic(err)
+			}
+			if response.StatusCode != 200 {
+				fmt.Printf("\nUnexpected response status code received from GetInstanceDestination(): %d\n", response.StatusCode)
+			}
+
+			// end-get_instance_destination
+
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(200))
+		})
+		It(`UpdateInstanceDestination request example`, func() {
+			// begin-update_instance_destination
+
+			updateInstanceDestinationOptions := secretsManagerInstanceManagementService.NewUpdateInstanceDestinationOptions(
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
+				"b2c3d4e5-f6a7-8901-bcde-f12345678901",
+				map[string]interface{}{"anyKey": "anyValue"},
+			)
+
+			response, err := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptions)
+			if err != nil {
+				panic(err)
+			}
+			if response.StatusCode != 200 {
+				fmt.Printf("\nUnexpected response status code received from UpdateInstanceDestination(): %d\n", response.StatusCode)
+			}
+
+			// end-update_instance_destination
+
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(200))
+		})
 		It(`DeleteInstanceAdmintokens request example`, func() {
 			// begin-delete_instance_admintokens
 
@@ -160,6 +248,27 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Examples Tests`, func() {
 			}
 
 			// end-delete_instance_admintokens
+
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(204))
+		})
+		It(`DeleteInstanceDestination request example`, func() {
+			// begin-delete_instance_destination
+
+			deleteInstanceDestinationOptions := secretsManagerInstanceManagementService.NewDeleteInstanceDestinationOptions(
+				"bfc50c2e-d66d-4f37-9ccf-9713f8325b39",
+				"b2c3d4e5-f6a7-8901-bcde-f12345678901",
+			)
+
+			response, err := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptions)
+			if err != nil {
+				panic(err)
+			}
+			if response.StatusCode != 204 {
+				fmt.Printf("\nUnexpected response status code received from DeleteInstanceDestination(): %d\n", response.StatusCode)
+			}
+
+			// end-delete_instance_destination
 
 			Expect(err).To(BeNil())
 			Expect(response.StatusCode).To(Equal(204))
