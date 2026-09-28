@@ -40,6 +40,7 @@
       {
         "message": "chore(release): ${nextRelease.version} [skip ci] release notes\n\n${nextRelease.notes}",
         "assets": [
+          ".bumpversion.toml",
           "common/common.go"
         ]
       }
