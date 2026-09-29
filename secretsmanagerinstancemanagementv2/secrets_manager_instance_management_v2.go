@@ -15,7 +15,7 @@
  */
 
 /*
- * IBM OpenAPI SDK Code Generator Version: 3.116.0-df613dbc-20260803-154903
+ * IBM OpenAPI SDK Code Generator Version: 3.117.1-c28a0a4f-20260924-094841
  */
 
 // Package secretsmanagerinstancemanagementv2 : Operations and models for the SecretsManagerInstanceManagementV2 service
@@ -191,14 +191,16 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Disa
 // CreateVaultAdmintoken : Create admin token
 // Generate a Vault admin token for authenticating to your Vault Dedicated cluster. The token is valid for 1 hour and
 // grants administrative privileges. Use only for initial setup and cluster management, then revoke immediately.
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions) (result *Token, response *core.DetailedResponse, err error) {
+// Optionally, set response_wrapping to true in the request body to receive a Vault response-wrapped token instead of a
+// plain admin token.
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions) (result TokenIntf, response *core.DetailedResponse, err error) {
 	result, response, err = secretsManagerInstanceManagement.CreateVaultAdmintokenWithContext(context.Background(), createVaultAdmintokenOptions)
 	err = core.RepurposeSDKProblem(err, "")
 	return
 }
 
 // CreateVaultAdmintokenWithContext is an alternate form of the CreateVaultAdmintoken method which supports a Context parameter
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateVaultAdmintokenWithContext(ctx context.Context, createVaultAdmintokenOptions *CreateVaultAdmintokenOptions) (result *Token, response *core.DetailedResponse, err error) {
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateVaultAdmintokenWithContext(ctx context.Context, createVaultAdmintokenOptions *CreateVaultAdmintokenOptions) (result TokenIntf, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(createVaultAdmintokenOptions, "createVaultAdmintokenOptions cannot be nil")
 	if err != nil {
 		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
@@ -232,6 +234,17 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Crea
 		builder.AddHeader(headerName, headerValue)
 	}
 	builder.AddHeader("Accept", "application/json")
+	builder.AddHeader("Content-Type", "application/json")
+
+	body := make(map[string]interface{})
+	if createVaultAdmintokenOptions.ResponseWrapping != nil {
+		body["response_wrapping"] = createVaultAdmintokenOptions.ResponseWrapping
+	}
+	_, err = builder.SetBodyContentJSON(body)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
+		return
+	}
 
 	request, err := builder.Build()
 	if err != nil {
@@ -462,7 +475,7 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) List
 // CreateInstanceDestination : Create destination
 // Create a new destination between your Vault Dedicated cluster and an IBM Cloud service instance.
 //
-// Returns `202 Accepted` with `state: not_started`. Provisioning completes asynchronously — poll `GET
+// Returns `202 Accepted` with `state: provisioning`. Provisioning completes asynchronously — poll `GET
 // /destinations/{id}` until `state` transitions to `succeeded` or `failed`.
 //
 // **Beta**: Only Gen 1 (Classic) IBM Cloud Database service instances are supported. Gen 2 instances are rejected with
@@ -470,14 +483,14 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) List
 //
 // **Rate Limit**: 10 requests per instance per minute
 // **Quota**: Maximum 20 destinations per instance.
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateInstanceDestination(createInstanceDestinationOptions *CreateInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
-	response, err = secretsManagerInstanceManagement.CreateInstanceDestinationWithContext(context.Background(), createInstanceDestinationOptions)
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateInstanceDestination(createInstanceDestinationOptions *CreateInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
+	result, response, err = secretsManagerInstanceManagement.CreateInstanceDestinationWithContext(context.Background(), createInstanceDestinationOptions)
 	err = core.RepurposeSDKProblem(err, "")
 	return
 }
 
 // CreateInstanceDestinationWithContext is an alternate form of the CreateInstanceDestination method which supports a Context parameter
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateInstanceDestinationWithContext(ctx context.Context, createInstanceDestinationOptions *CreateInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateInstanceDestinationWithContext(ctx context.Context, createInstanceDestinationOptions *CreateInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(createInstanceDestinationOptions, "createInstanceDestinationOptions cannot be nil")
 	if err != nil {
 		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
@@ -513,20 +526,7 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Crea
 	builder.AddHeader("Accept", "application/json")
 	builder.AddHeader("Content-Type", "application/json")
 
-	body := make(map[string]interface{})
-	if createInstanceDestinationOptions.Name != nil {
-		body["name"] = createInstanceDestinationOptions.Name
-	}
-	if createInstanceDestinationOptions.Type != nil {
-		body["type"] = createInstanceDestinationOptions.Type
-	}
-	if createInstanceDestinationOptions.Description != nil {
-		body["description"] = createInstanceDestinationOptions.Description
-	}
-	if createInstanceDestinationOptions.Crn != nil {
-		body["crn"] = createInstanceDestinationOptions.Crn
-	}
-	_, err = builder.SetBodyContentJSON(body)
+	_, err = builder.SetBodyContentJSON(createInstanceDestinationOptions.DestinationPrototype)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
@@ -538,11 +538,20 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Crea
 		return
 	}
 
-	response, err = secretsManagerInstanceManagement.Service.Request(request, nil)
+	var rawResponse map[string]json.RawMessage
+	response, err = secretsManagerInstanceManagement.Service.Request(request, &rawResponse)
 	if err != nil {
 		core.EnrichHTTPProblem(err, "create_instance_destination", getServiceComponentInfo())
 		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalIbmCloudDatabaseDestination)
+		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
+			return
+		}
+		response.Result = result
 	}
 
 	return
@@ -551,16 +560,16 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Crea
 // GetInstanceDestination : Get destination details
 // Retrieve details and current state for a specific destination for your Vault Dedicated cluster.
 //
-// Returns `404` if the destination does not exist. A deleted destination is immediately absent from GET — the
-// `deleting` state is internal only and never returned to callers.
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
-	response, err = secretsManagerInstanceManagement.GetInstanceDestinationWithContext(context.Background(), getInstanceDestinationOptions)
+// Returns `404` if the destination does not exist. A destination undergoing deletion may appear with a `deleting` state
+// before it is fully removed.
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
+	result, response, err = secretsManagerInstanceManagement.GetInstanceDestinationWithContext(context.Background(), getInstanceDestinationOptions)
 	err = core.RepurposeSDKProblem(err, "")
 	return
 }
 
 // GetInstanceDestinationWithContext is an alternate form of the GetInstanceDestination method which supports a Context parameter
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) GetInstanceDestinationWithContext(ctx context.Context, getInstanceDestinationOptions *GetInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) GetInstanceDestinationWithContext(ctx context.Context, getInstanceDestinationOptions *GetInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(getInstanceDestinationOptions, "getInstanceDestinationOptions cannot be nil")
 	if err != nil {
 		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
@@ -602,11 +611,20 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) GetI
 		return
 	}
 
-	response, err = secretsManagerInstanceManagement.Service.Request(request, nil)
+	var rawResponse map[string]json.RawMessage
+	response, err = secretsManagerInstanceManagement.Service.Request(request, &rawResponse)
 	if err != nil {
 		core.EnrichHTTPProblem(err, "get_instance_destination", getServiceComponentInfo())
 		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalIbmCloudDatabaseDestination)
+		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
+			return
+		}
+		response.Result = result
 	}
 
 	return
@@ -615,14 +633,14 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) GetI
 // UpdateInstanceDestination : Update destination
 // Update mutable metadata fields (`name`, `description`) on a destination for your Vault Dedicated cluster. All other
 // fields are immutable after creation.
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) UpdateInstanceDestination(updateInstanceDestinationOptions *UpdateInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
-	response, err = secretsManagerInstanceManagement.UpdateInstanceDestinationWithContext(context.Background(), updateInstanceDestinationOptions)
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) UpdateInstanceDestination(updateInstanceDestinationOptions *UpdateInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
+	result, response, err = secretsManagerInstanceManagement.UpdateInstanceDestinationWithContext(context.Background(), updateInstanceDestinationOptions)
 	err = core.RepurposeSDKProblem(err, "")
 	return
 }
 
 // UpdateInstanceDestinationWithContext is an alternate form of the UpdateInstanceDestination method which supports a Context parameter
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) UpdateInstanceDestinationWithContext(ctx context.Context, updateInstanceDestinationOptions *UpdateInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) UpdateInstanceDestinationWithContext(ctx context.Context, updateInstanceDestinationOptions *UpdateInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(updateInstanceDestinationOptions, "updateInstanceDestinationOptions cannot be nil")
 	if err != nil {
 		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
@@ -659,7 +677,7 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Upda
 	builder.AddHeader("Accept", "application/json")
 	builder.AddHeader("Content-Type", "application/merge-patch+json")
 
-	_, err = builder.SetBodyContentJSON(updateInstanceDestinationOptions.RequestBody)
+	_, err = builder.SetBodyContentJSON(updateInstanceDestinationOptions.DestinationPatch)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "set-json-body-error", common.GetComponentInfo())
 		return
@@ -671,31 +689,40 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Upda
 		return
 	}
 
-	response, err = secretsManagerInstanceManagement.Service.Request(request, nil)
+	var rawResponse map[string]json.RawMessage
+	response, err = secretsManagerInstanceManagement.Service.Request(request, &rawResponse)
 	if err != nil {
 		core.EnrichHTTPProblem(err, "update_instance_destination", getServiceComponentInfo())
 		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalIbmCloudDatabaseDestination)
+		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
+			return
+		}
+		response.Result = result
 	}
 
 	return
 }
 
 // DeleteInstanceDestination : Delete destination
-// Delete a destination for your Vault Dedicated cluster. A deleted destination is immediately absent from GET after
-// this call returns 204.
+// Delete a destination for your Vault Dedicated cluster. Returns `202 Accepted` and begins deletion asynchronously —
+// the destination is removed from `GET /destinations` once deletion completes.
 //
 // A `failed` destination still counts against the per-instance quota until deleted.
 //
 // **Rate Limit**: 10 requests per instance per minute.
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
-	response, err = secretsManagerInstanceManagement.DeleteInstanceDestinationWithContext(context.Background(), deleteInstanceDestinationOptions)
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
+	result, response, err = secretsManagerInstanceManagement.DeleteInstanceDestinationWithContext(context.Background(), deleteInstanceDestinationOptions)
 	err = core.RepurposeSDKProblem(err, "")
 	return
 }
 
 // DeleteInstanceDestinationWithContext is an alternate form of the DeleteInstanceDestination method which supports a Context parameter
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteInstanceDestinationWithContext(ctx context.Context, deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions) (response *core.DetailedResponse, err error) {
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteInstanceDestinationWithContext(ctx context.Context, deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions) (result *IbmCloudDatabaseDestination, response *core.DetailedResponse, err error) {
 	err = core.ValidateNotNil(deleteInstanceDestinationOptions, "deleteInstanceDestinationOptions cannot be nil")
 	if err != nil {
 		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
@@ -729,6 +756,7 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Dele
 	for headerName, headerValue := range deleteInstanceDestinationOptions.Headers {
 		builder.AddHeader(headerName, headerValue)
 	}
+	builder.AddHeader("Accept", "application/json")
 
 	request, err := builder.Build()
 	if err != nil {
@@ -736,11 +764,20 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Dele
 		return
 	}
 
-	response, err = secretsManagerInstanceManagement.Service.Request(request, nil)
+	var rawResponse map[string]json.RawMessage
+	response, err = secretsManagerInstanceManagement.Service.Request(request, &rawResponse)
 	if err != nil {
 		core.EnrichHTTPProblem(err, "delete_instance_destination", getServiceComponentInfo())
 		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
+	}
+	if rawResponse != nil {
+		err = core.UnmarshalModel(rawResponse, "", &result, UnmarshalIbmCloudDatabaseDestination)
+		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-resp-error", common.GetComponentInfo())
+			return
+		}
+		response.Result = result
 	}
 
 	return
@@ -749,37 +786,80 @@ func getServiceComponentInfo() *core.ProblemComponent {
 	return core.NewProblemComponent(DefaultServiceName, "2.0.0")
 }
 
-// CreateInstanceDestinationOptions : The CreateInstanceDestination options.
-type CreateInstanceDestinationOptions struct {
-	// Secrets Manager instance ID.
-	InstanceID *string `json:"instance_id" validate:"required,ne="`
-
+// CreateDestinationRequest : Request body for creating a destination.
+// Models which "extend" this model:
+// - CreateDestinationRequestIbmCloudDatabaseDestinationPrototype
+type CreateDestinationRequest struct {
 	// Destination name.
-	Name *string `json:"name,omitempty"`
+	Name *string `json:"name" validate:"required"`
 
 	// Destination type.
-	Type *string `json:"type,omitempty"`
+	Type *string `json:"type" validate:"required"`
 
 	// Optional description.
 	Description *string `json:"description,omitempty"`
 
 	// IBM Cloud Database service instance CRN.
-	Crn *string `json:"crn,omitempty"`
+	Crn *string `json:"crn" validate:"required"`
+}
+
+// Constants associated with the CreateDestinationRequest.Type property.
+// Destination type.
+const (
+	CreateDestinationRequest_Type_IbmCloudDatabase = "ibm_cloud_database"
+)
+func (*CreateDestinationRequest) isaCreateDestinationRequest() bool {
+	return true
+}
+
+type CreateDestinationRequestIntf interface {
+	isaCreateDestinationRequest() bool
+}
+
+// UnmarshalCreateDestinationRequest unmarshals an instance of CreateDestinationRequest from the specified map of raw messages.
+func UnmarshalCreateDestinationRequest(m map[string]json.RawMessage, result interface{}) (err error) {
+	// Retrieve discriminator value to determine correct "subclass".
+	var discValue string
+	err = core.UnmarshalPrimitive(m, "type", &discValue)
+	if err != nil {
+		errMsg := fmt.Sprintf("error unmarshalling discriminator property 'type': %s", err.Error())
+		err = core.SDKErrorf(err, errMsg, "discriminator-unmarshal-error", common.GetComponentInfo())
+		return
+	}
+	if discValue == "" {
+		err = core.SDKErrorf(err, "required discriminator property 'type' not found in JSON object", "missing-discriminator", common.GetComponentInfo())
+		return
+	}
+	switch discValue {
+	case "ibm_cloud_database":
+		err = core.UnmarshalModel(m, "", result, UnmarshalCreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+		if err != nil {
+			err = core.SDKErrorf(err, "", "unmarshal-CreateDestinationRequestIbmCloudDatabaseDestinationPrototype-error", common.GetComponentInfo())
+		}
+	default:
+		errMsg := fmt.Sprintf("unrecognized value for discriminator property 'type': %s", discValue)
+		err = core.SDKErrorf(err, errMsg, "invalid-discriminator", common.GetComponentInfo())
+	}
+	return
+}
+
+// CreateInstanceDestinationOptions : The CreateInstanceDestination options.
+type CreateInstanceDestinationOptions struct {
+	// Secrets Manager instance ID.
+	InstanceID *string `json:"instance_id" validate:"required,ne="`
+
+	// Request body for creating a destination.
+	DestinationPrototype CreateDestinationRequestIntf `json:"destinationPrototype" validate:"required"`
 
 	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
-// Constants associated with the CreateInstanceDestinationOptions.Type property.
-// Destination type.
-const (
-	CreateInstanceDestinationOptions_Type_IbmCloudDatabase = "ibm_cloud_database"
-)
-
 // NewCreateInstanceDestinationOptions : Instantiate CreateInstanceDestinationOptions
-func (*SecretsManagerInstanceManagementV2) NewCreateInstanceDestinationOptions(instanceID string) *CreateInstanceDestinationOptions {
+func (*SecretsManagerInstanceManagementV2) NewCreateInstanceDestinationOptions(instanceID string, destinationPrototype CreateDestinationRequestIntf) *CreateInstanceDestinationOptions {
 	return &CreateInstanceDestinationOptions{
 		InstanceID: core.StringPtr(instanceID),
+		DestinationPrototype: destinationPrototype,
 	}
 }
 
@@ -789,27 +869,9 @@ func (_options *CreateInstanceDestinationOptions) SetInstanceID(instanceID strin
 	return _options
 }
 
-// SetName : Allow user to set Name
-func (_options *CreateInstanceDestinationOptions) SetName(name string) *CreateInstanceDestinationOptions {
-	_options.Name = core.StringPtr(name)
-	return _options
-}
-
-// SetType : Allow user to set Type
-func (_options *CreateInstanceDestinationOptions) SetType(typeVar string) *CreateInstanceDestinationOptions {
-	_options.Type = core.StringPtr(typeVar)
-	return _options
-}
-
-// SetDescription : Allow user to set Description
-func (_options *CreateInstanceDestinationOptions) SetDescription(description string) *CreateInstanceDestinationOptions {
-	_options.Description = core.StringPtr(description)
-	return _options
-}
-
-// SetCrn : Allow user to set Crn
-func (_options *CreateInstanceDestinationOptions) SetCrn(crn string) *CreateInstanceDestinationOptions {
-	_options.Crn = core.StringPtr(crn)
+// SetDestinationPrototype : Allow user to set DestinationPrototype
+func (_options *CreateInstanceDestinationOptions) SetDestinationPrototype(destinationPrototype CreateDestinationRequestIntf) *CreateInstanceDestinationOptions {
+	_options.DestinationPrototype = destinationPrototype
 	return _options
 }
 
@@ -823,6 +885,10 @@ func (options *CreateInstanceDestinationOptions) SetHeaders(param map[string]str
 type CreateVaultAdmintokenOptions struct {
 	// Secrets Manager instance ID.
 	ID *string `json:"id" validate:"required,ne="`
+
+	// If true, returns a Vault response-wrapped token (wrapped_token). If false or absent, returns a plain admin token
+	// (token).
+	ResponseWrapping *bool `json:"response_wrapping,omitempty"`
 
 	// Allows users to set headers on API requests.
 	Headers map[string]string
@@ -838,6 +904,12 @@ func (*SecretsManagerInstanceManagementV2) NewCreateVaultAdmintokenOptions(id st
 // SetID : Allow user to set ID
 func (_options *CreateVaultAdmintokenOptions) SetID(id string) *CreateVaultAdmintokenOptions {
 	_options.ID = core.StringPtr(id)
+	return _options
+}
+
+// SetResponseWrapping : Allow user to set ResponseWrapping
+func (_options *CreateVaultAdmintokenOptions) SetResponseWrapping(responseWrapping bool) *CreateVaultAdmintokenOptions {
+	_options.ResponseWrapping = core.BoolPtr(responseWrapping)
 	return _options
 }
 
@@ -931,11 +1003,12 @@ type Destination struct {
 	Description *string `json:"description,omitempty"`
 
 	// Destination state:
-	// - `not_started`: Job accepted, waiting to start provisioning
+	// - `not_started`: Initial state before the first provisioning attempt begins
 	// - `provisioning`: Provisioning in progress — poll until `succeeded` or `failed`
 	// - `succeeded`: Destination ready and usable
-	// - `failed`: Provisioning failed — terminal state; delete and recreate.
-	//   A `failed` destination still counts against the per-instance quota until deleted.
+	// - `failed`: Terminal state reached when provisioning or deletion fails. A `failed` destination still counts against
+	// the per-instance quota until deleted.
+	// - `deleting`: Deletion in progress.
 	State *string `json:"state" validate:"required"`
 
 	// Timestamp when the destination was created.
@@ -946,6 +1019,10 @@ type Destination struct {
 
 	// IAM identity that created the destination.
 	CreatedBy *string `json:"created_by,omitempty"`
+
+	// Human-readable message providing additional context about the current state. Present only when non-empty — set when
+	// `state` is `failed`, describing why provisioning or deletion failed.
+	Message *string `json:"message,omitempty"`
 }
 
 // Constants associated with the Destination.Type property.
@@ -956,55 +1033,81 @@ const (
 
 // Constants associated with the Destination.State property.
 // Destination state:
-// - `not_started`: Job accepted, waiting to start provisioning
+// - `not_started`: Initial state before the first provisioning attempt begins
 // - `provisioning`: Provisioning in progress — poll until `succeeded` or `failed`
 // - `succeeded`: Destination ready and usable
-// - `failed`: Provisioning failed — terminal state; delete and recreate.
-//   A `failed` destination still counts against the per-instance quota until deleted.
+// - `failed`: Terminal state reached when provisioning or deletion fails. A `failed` destination still counts against
+// the per-instance quota until deleted.
+// - `deleting`: Deletion in progress.
 const (
+	Destination_State_Deleting = "deleting"
 	Destination_State_Failed = "failed"
 	Destination_State_NotStarted = "not_started"
 	Destination_State_Provisioning = "provisioning"
 	Destination_State_Succeeded = "succeeded"
 )
-func (*Destination) isaDestination() bool {
-	return true
-}
-
-type DestinationIntf interface {
-	isaDestination() bool
-}
 
 // UnmarshalDestination unmarshals an instance of Destination from the specified map of raw messages.
 func UnmarshalDestination(m map[string]json.RawMessage, result interface{}) (err error) {
-	// Retrieve discriminator value to determine correct "subclass".
-	var discValue string
-	err = core.UnmarshalPrimitive(m, "type", &discValue)
+	obj := new(Destination)
+	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
 	if err != nil {
-		errMsg := fmt.Sprintf("error unmarshalling discriminator property 'type': %s", err.Error())
-		err = core.SDKErrorf(err, errMsg, "discriminator-unmarshal-error", common.GetComponentInfo())
+		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
 		return
 	}
-	if discValue == "" {
-		err = core.SDKErrorf(err, "required discriminator property 'type' not found in JSON object", "missing-discriminator", common.GetComponentInfo())
+	err = core.UnmarshalPrimitive(m, "href", &obj.Href)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "href-error", common.GetComponentInfo())
 		return
 	}
-	if discValue == "ibm_cloud_database" {
-		err = core.UnmarshalModel(m, "", result, UnmarshalIbmCloudDatabaseDestination)
-		if err != nil {
-			err = core.SDKErrorf(err, "", "unmarshal-IbmCloudDatabaseDestination-error", common.GetComponentInfo())
-		}
-	} else {
-		errMsg := fmt.Sprintf("unrecognized value for discriminator property 'type': %s", discValue)
-		err = core.SDKErrorf(err, errMsg, "invalid-discriminator", common.GetComponentInfo())
+	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
+		return
 	}
+	err = core.UnmarshalPrimitive(m, "type", &obj.Type)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "type-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "description", &obj.Description)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "description-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "state", &obj.State)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "state-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "created_at", &obj.CreatedAt)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "created_at-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "updated_at", &obj.UpdatedAt)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "updated_at-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "created_by", &obj.CreatedBy)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "created_by-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "message", &obj.Message)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "message-error", common.GetComponentInfo())
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
 	return
 }
 
 // DestinationCollection : List of destinations for a Vault Dedicated cluster.
 type DestinationCollection struct {
 	// List of destinations.
-	Destinations []DestinationIntf `json:"destinations" validate:"required"`
+	Destinations []Destination `json:"destinations" validate:"required"`
 
 	// Total number of destinations. Maximum 20 per instance.
 	Total *int64 `json:"total" validate:"required"`
@@ -1024,6 +1127,45 @@ func UnmarshalDestinationCollection(m map[string]json.RawMessage, result interfa
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// DestinationPatch : Fields to update on a destination. At least one field must be provided.
+type DestinationPatch struct {
+	// Updated name (must remain unique per instance).
+	Name *string `json:"name,omitempty"`
+
+	// Updated description.
+	Description *string `json:"description,omitempty"`
+}
+
+// UnmarshalDestinationPatch unmarshals an instance of DestinationPatch from the specified map of raw messages.
+func UnmarshalDestinationPatch(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(DestinationPatch)
+	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "description", &obj.Description)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "description-error", common.GetComponentInfo())
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// AsPatch returns a generic map representation of the DestinationPatch
+func (destinationPatch *DestinationPatch) AsPatch() (_patch map[string]interface{}, err error) {
+	_patch = map[string]interface{}{}
+	if !core.IsNil(destinationPatch.Name) {
+		_patch["name"] = destinationPatch.Name
+	}
+	if !core.IsNil(destinationPatch.Description) {
+		_patch["description"] = destinationPatch.Description
+	}
+
 	return
 }
 
@@ -1091,6 +1233,134 @@ func (_options *GetInstanceOptions) SetID(id string) *GetInstanceOptions {
 func (options *GetInstanceOptions) SetHeaders(param map[string]string) *GetInstanceOptions {
 	options.Headers = param
 	return options
+}
+
+// IbmCloudDatabaseDestination : A destination resource representing a private network link to an IBM Cloud Database service instance on a Vault
+// Dedicated cluster.
+type IbmCloudDatabaseDestination struct {
+	// Destination ID.
+	ID *strfmt.UUID `json:"id" validate:"required"`
+
+	// The URL of the destination resource.
+	Href *string `json:"href,omitempty"`
+
+	// Destination name.
+	Name *string `json:"name" validate:"required"`
+
+	// Destination type.
+	Type *string `json:"type" validate:"required"`
+
+	// Optional description.
+	Description *string `json:"description,omitempty"`
+
+	// Destination state:
+	// - `not_started`: Initial state before the first provisioning attempt begins
+	// - `provisioning`: Provisioning in progress — poll until `succeeded` or `failed`
+	// - `succeeded`: Destination ready and usable
+	// - `failed`: Terminal state reached when provisioning or deletion fails. A `failed` destination still counts against
+	// the per-instance quota until deleted.
+	// - `deleting`: Deletion in progress.
+	State *string `json:"state" validate:"required"`
+
+	// Timestamp when the destination was created.
+	CreatedAt *strfmt.DateTime `json:"created_at" validate:"required"`
+
+	// Timestamp when the destination was last updated.
+	UpdatedAt *strfmt.DateTime `json:"updated_at" validate:"required"`
+
+	// IAM identity that created the destination.
+	CreatedBy *string `json:"created_by,omitempty"`
+
+	// Human-readable message providing additional context about the current state. Present only when non-empty — set when
+	// `state` is `failed`, describing why provisioning or deletion failed.
+	Message *string `json:"message,omitempty"`
+
+	// IBM Cloud Database service instance CRN.
+	Crn *string `json:"crn" validate:"required"`
+}
+
+// Constants associated with the IbmCloudDatabaseDestination.Type property.
+// Destination type.
+const (
+	IbmCloudDatabaseDestination_Type_IbmCloudDatabase = "ibm_cloud_database"
+)
+
+// Constants associated with the IbmCloudDatabaseDestination.State property.
+// Destination state:
+// - `not_started`: Initial state before the first provisioning attempt begins
+// - `provisioning`: Provisioning in progress — poll until `succeeded` or `failed`
+// - `succeeded`: Destination ready and usable
+// - `failed`: Terminal state reached when provisioning or deletion fails. A `failed` destination still counts against
+// the per-instance quota until deleted.
+// - `deleting`: Deletion in progress.
+const (
+	IbmCloudDatabaseDestination_State_Deleting = "deleting"
+	IbmCloudDatabaseDestination_State_Failed = "failed"
+	IbmCloudDatabaseDestination_State_NotStarted = "not_started"
+	IbmCloudDatabaseDestination_State_Provisioning = "provisioning"
+	IbmCloudDatabaseDestination_State_Succeeded = "succeeded"
+)
+
+// UnmarshalIbmCloudDatabaseDestination unmarshals an instance of IbmCloudDatabaseDestination from the specified map of raw messages.
+func UnmarshalIbmCloudDatabaseDestination(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(IbmCloudDatabaseDestination)
+	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "href", &obj.Href)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "href-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "type", &obj.Type)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "type-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "description", &obj.Description)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "description-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "state", &obj.State)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "state-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "created_at", &obj.CreatedAt)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "created_at-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "updated_at", &obj.UpdatedAt)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "updated_at-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "created_by", &obj.CreatedBy)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "created_by-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "message", &obj.Message)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "message-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "crn", &obj.Crn)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "crn-error", common.GetComponentInfo())
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
 }
 
 // Instance : The service instance information.
@@ -1188,6 +1458,7 @@ type ListInstanceDestinationsOptions struct {
 // Constants associated with the ListInstanceDestinationsOptions.State property.
 // Filter by destination state.
 const (
+	ListInstanceDestinationsOptions_State_Deleting = "deleting"
 	ListInstanceDestinationsOptions_State_Failed = "failed"
 	ListInstanceDestinationsOptions_State_NotStarted = "not_started"
 	ListInstanceDestinationsOptions_State_Provisioning = "provisioning"
@@ -1219,10 +1490,24 @@ func (options *ListInstanceDestinationsOptions) SetHeaders(param map[string]stri
 	return options
 }
 
-// Token : Admin Token response.
+// Token : Admin token response. Exactly one of token or wrapped_token is present, never both. wrapped_token is returned only
+// when response_wrapping: true is requested.
+// Models which "extend" this model:
+// - TokenPlainAdminToken
+// - TokenWrappedAdminToken
 type Token struct {
-	// The token value.
-	Token *string `json:"token" validate:"required"`
+	// The plain Vault admin token.
+	Token *string `json:"token,omitempty"`
+
+	// A Vault response-wrapped token. Present only when response_wrapping: true is requested.
+	WrappedToken *string `json:"wrapped_token,omitempty"`
+}
+func (*Token) isaToken() bool {
+	return true
+}
+
+type TokenIntf interface {
+	isaToken() bool
 }
 
 // UnmarshalToken unmarshals an instance of Token from the specified map of raw messages.
@@ -1231,6 +1516,11 @@ func UnmarshalToken(m map[string]json.RawMessage, result interface{}) (err error
 	err = core.UnmarshalPrimitive(m, "token", &obj.Token)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "token-error", common.GetComponentInfo())
+		return
+	}
+	err = core.UnmarshalPrimitive(m, "wrapped_token", &obj.WrappedToken)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "wrapped_token-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
@@ -1246,18 +1536,18 @@ type UpdateInstanceDestinationOptions struct {
 	DestinationID *string `json:"destination_id" validate:"required,ne="`
 
 	// JSON Merge-Patch content for update_instance_destination.
-	RequestBody map[string]interface{} `json:"request_body" validate:"required"`
+	DestinationPatch map[string]interface{} `json:"Destination_patch" validate:"required"`
 
 	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
 // NewUpdateInstanceDestinationOptions : Instantiate UpdateInstanceDestinationOptions
-func (*SecretsManagerInstanceManagementV2) NewUpdateInstanceDestinationOptions(instanceID string, destinationID string, requestBody map[string]interface{}) *UpdateInstanceDestinationOptions {
+func (*SecretsManagerInstanceManagementV2) NewUpdateInstanceDestinationOptions(instanceID string, destinationID string, destinationPatch map[string]interface{}) *UpdateInstanceDestinationOptions {
 	return &UpdateInstanceDestinationOptions{
 		InstanceID: core.StringPtr(instanceID),
 		DestinationID: core.StringPtr(destinationID),
-		RequestBody: requestBody,
+		DestinationPatch: destinationPatch,
 	}
 }
 
@@ -1273,9 +1563,9 @@ func (_options *UpdateInstanceDestinationOptions) SetDestinationID(destinationID
 	return _options
 }
 
-// SetRequestBody : Allow user to set RequestBody
-func (_options *UpdateInstanceDestinationOptions) SetRequestBody(requestBody map[string]interface{}) *UpdateInstanceDestinationOptions {
-	_options.RequestBody = requestBody
+// SetDestinationPatch : Allow user to set DestinationPatch
+func (_options *UpdateInstanceDestinationOptions) SetDestinationPatch(destinationPatch map[string]interface{}) *UpdateInstanceDestinationOptions {
+	_options.DestinationPatch = destinationPatch
 	return _options
 }
 
@@ -1418,16 +1708,9 @@ func UnmarshalVaultDedicatedInstanceEndpoints(m map[string]json.RawMessage, resu
 	return
 }
 
-// IbmCloudDatabaseDestination : A destination resource representing a private network link to an IBM Cloud Database service instance on a Vault
-// Dedicated cluster.
-// This model "extends" Destination
-type IbmCloudDatabaseDestination struct {
-	// Destination ID.
-	ID *strfmt.UUID `json:"id" validate:"required"`
-
-	// The URL of the destination resource.
-	Href *string `json:"href,omitempty"`
-
+// CreateDestinationRequestIbmCloudDatabaseDestinationPrototype : Request body for creating an IBM Cloud Database destination.
+// This model "extends" CreateDestinationRequest
+type CreateDestinationRequestIbmCloudDatabaseDestinationPrototype struct {
 	// Destination name.
 	Name *string `json:"name" validate:"required"`
 
@@ -1437,64 +1720,37 @@ type IbmCloudDatabaseDestination struct {
 	// Optional description.
 	Description *string `json:"description,omitempty"`
 
-	// Destination state:
-	// - `not_started`: Job accepted, waiting to start provisioning
-	// - `provisioning`: Provisioning in progress — poll until `succeeded` or `failed`
-	// - `succeeded`: Destination ready and usable
-	// - `failed`: Provisioning failed — terminal state; delete and recreate.
-	//   A `failed` destination still counts against the per-instance quota until deleted.
-	State *string `json:"state" validate:"required"`
-
-	// Timestamp when the destination was created.
-	CreatedAt *strfmt.DateTime `json:"created_at" validate:"required"`
-
-	// Timestamp when the destination was last updated.
-	UpdatedAt *strfmt.DateTime `json:"updated_at" validate:"required"`
-
-	// IAM identity that created the destination.
-	CreatedBy *string `json:"created_by,omitempty"`
-
 	// IBM Cloud Database service instance CRN.
 	Crn *string `json:"crn" validate:"required"`
 }
 
-// Constants associated with the IbmCloudDatabaseDestination.Type property.
+// Constants associated with the CreateDestinationRequestIbmCloudDatabaseDestinationPrototype.Type property.
 // Destination type.
 const (
-	IbmCloudDatabaseDestination_Type_IbmCloudDatabase = "ibm_cloud_database"
+	CreateDestinationRequestIbmCloudDatabaseDestinationPrototype_Type_IbmCloudDatabase = "ibm_cloud_database"
 )
 
-// Constants associated with the IbmCloudDatabaseDestination.State property.
-// Destination state:
-// - `not_started`: Job accepted, waiting to start provisioning
-// - `provisioning`: Provisioning in progress — poll until `succeeded` or `failed`
-// - `succeeded`: Destination ready and usable
-// - `failed`: Provisioning failed — terminal state; delete and recreate.
-//   A `failed` destination still counts against the per-instance quota until deleted.
-const (
-	IbmCloudDatabaseDestination_State_Failed = "failed"
-	IbmCloudDatabaseDestination_State_NotStarted = "not_started"
-	IbmCloudDatabaseDestination_State_Provisioning = "provisioning"
-	IbmCloudDatabaseDestination_State_Succeeded = "succeeded"
-)
+// NewCreateDestinationRequestIbmCloudDatabaseDestinationPrototype : Instantiate CreateDestinationRequestIbmCloudDatabaseDestinationPrototype (Generic Model Constructor)
+func (*SecretsManagerInstanceManagementV2) NewCreateDestinationRequestIbmCloudDatabaseDestinationPrototype(name string, typeVar string, crn string) (_model *CreateDestinationRequestIbmCloudDatabaseDestinationPrototype, err error) {
+	_model = &CreateDestinationRequestIbmCloudDatabaseDestinationPrototype{
+		Name: core.StringPtr(name),
+		Type: core.StringPtr(typeVar),
+		Crn: core.StringPtr(crn),
+	}
+	err = core.ValidateStruct(_model, "required parameters")
+	if err != nil {
+		err = core.SDKErrorf(err, "", "model-missing-required", common.GetComponentInfo())
+	}
+	return
+}
 
-func (*IbmCloudDatabaseDestination) isaDestination() bool {
+func (*CreateDestinationRequestIbmCloudDatabaseDestinationPrototype) isaCreateDestinationRequest() bool {
 	return true
 }
 
-// UnmarshalIbmCloudDatabaseDestination unmarshals an instance of IbmCloudDatabaseDestination from the specified map of raw messages.
-func UnmarshalIbmCloudDatabaseDestination(m map[string]json.RawMessage, result interface{}) (err error) {
-	obj := new(IbmCloudDatabaseDestination)
-	err = core.UnmarshalPrimitive(m, "id", &obj.ID)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "id-error", common.GetComponentInfo())
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "href", &obj.Href)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "href-error", common.GetComponentInfo())
-		return
-	}
+// UnmarshalCreateDestinationRequestIbmCloudDatabaseDestinationPrototype unmarshals an instance of CreateDestinationRequestIbmCloudDatabaseDestinationPrototype from the specified map of raw messages.
+func UnmarshalCreateDestinationRequestIbmCloudDatabaseDestinationPrototype(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
 	err = core.UnmarshalPrimitive(m, "name", &obj.Name)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "name-error", common.GetComponentInfo())
@@ -1510,29 +1766,55 @@ func UnmarshalIbmCloudDatabaseDestination(m map[string]json.RawMessage, result i
 		err = core.SDKErrorf(err, "", "description-error", common.GetComponentInfo())
 		return
 	}
-	err = core.UnmarshalPrimitive(m, "state", &obj.State)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "state-error", common.GetComponentInfo())
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "created_at", &obj.CreatedAt)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "created_at-error", common.GetComponentInfo())
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "updated_at", &obj.UpdatedAt)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "updated_at-error", common.GetComponentInfo())
-		return
-	}
-	err = core.UnmarshalPrimitive(m, "created_by", &obj.CreatedBy)
-	if err != nil {
-		err = core.SDKErrorf(err, "", "created_by-error", common.GetComponentInfo())
-		return
-	}
 	err = core.UnmarshalPrimitive(m, "crn", &obj.Crn)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "crn-error", common.GetComponentInfo())
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TokenPlainAdminToken : Response containing a plain Vault admin token.
+// This model "extends" Token
+type TokenPlainAdminToken struct {
+	// The plain Vault admin token.
+	Token *string `json:"token" validate:"required"`
+}
+
+func (*TokenPlainAdminToken) isaToken() bool {
+	return true
+}
+
+// UnmarshalTokenPlainAdminToken unmarshals an instance of TokenPlainAdminToken from the specified map of raw messages.
+func UnmarshalTokenPlainAdminToken(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TokenPlainAdminToken)
+	err = core.UnmarshalPrimitive(m, "token", &obj.Token)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "token-error", common.GetComponentInfo())
+		return
+	}
+	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
+	return
+}
+
+// TokenWrappedAdminToken : Response containing a Vault response-wrapped token.
+// This model "extends" Token
+type TokenWrappedAdminToken struct {
+	// A Vault response-wrapped token. Present only when response_wrapping: true is requested.
+	WrappedToken *string `json:"wrapped_token" validate:"required"`
+}
+
+func (*TokenWrappedAdminToken) isaToken() bool {
+	return true
+}
+
+// UnmarshalTokenWrappedAdminToken unmarshals an instance of TokenWrappedAdminToken from the specified map of raw messages.
+func UnmarshalTokenWrappedAdminToken(m map[string]json.RawMessage, result interface{}) (err error) {
+	obj := new(TokenWrappedAdminToken)
+	err = core.UnmarshalPrimitive(m, "wrapped_token", &obj.WrappedToken)
+	if err != nil {
+		err = core.SDKErrorf(err, "", "wrapped_token-error", common.GetComponentInfo())
 		return
 	}
 	reflect.ValueOf(result).Elem().Set(reflect.ValueOf(obj))
