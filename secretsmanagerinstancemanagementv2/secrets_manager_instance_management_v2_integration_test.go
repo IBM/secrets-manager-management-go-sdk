@@ -98,6 +98,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		It(`CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions)`, func() {
 			createVaultAdmintokenOptions := &secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions{
 				ID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
+				ResponseWrapping: core.BoolPtr(true),
 			}
 
 			token, response, err := secretsManagerInstanceManagementService.CreateVaultAdmintoken(createVaultAdmintokenOptions)
@@ -145,17 +146,22 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 			shouldSkipTest()
 		})
 		It(`CreateInstanceDestination(createInstanceDestinationOptions *CreateInstanceDestinationOptions)`, func() {
-			createInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions{
-				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
+			createDestinationRequestModel := &secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype{
 				Name: core.StringPtr("my-postgres"),
 				Type: core.StringPtr("ibm_cloud_database"),
 				Description: core.StringPtr("Production PostgreSQL database"),
-				Crn: core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::"),
+				Crn: core.StringPtr("crn:v1:staging:public:databases-for-postgresql:us-south:a/791f5fb10986423e97aa8512f18b7e65:11111111-0000-4000-8000-111111111111::"),
 			}
 
-			response, err := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptions)
+			createInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions{
+				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
+				DestinationPrototype: createDestinationRequestModel,
+			}
+
+			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptions)
 			Expect(err).To(BeNil())
-			Expect(response.StatusCode).To(Equal(201))
+			Expect(response.StatusCode).To(Equal(202))
+			Expect(ibmCloudDatabaseDestination).ToNot(BeNil())
 		})
 	})
 
@@ -166,12 +172,13 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		It(`GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions)`, func() {
 			getInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions{
 				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
-				DestinationID: core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+				DestinationID: core.StringPtr("409ff7eb-221a-4f70-aa21-003f38366409"),
 			}
 
-			response, err := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptions)
+			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptions)
 			Expect(err).To(BeNil())
 			Expect(response.StatusCode).To(Equal(200))
+			Expect(ibmCloudDatabaseDestination).ToNot(BeNil())
 		})
 	})
 
@@ -180,15 +187,23 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 			shouldSkipTest()
 		})
 		It(`UpdateInstanceDestination(updateInstanceDestinationOptions *UpdateInstanceDestinationOptions)`, func() {
+			destinationPatchModel := &secretsmanagerinstancemanagementv2.DestinationPatch{
+				Name: core.StringPtr("my-postgres-updated"),
+				Description: core.StringPtr("Production PostgreSQL database"),
+			}
+			destinationPatchModelAsPatch, asPatchErr := destinationPatchModel.AsPatch()
+			Expect(asPatchErr).To(BeNil())
+
 			updateInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions{
 				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
-				DestinationID: core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
-				RequestBody: map[string]interface{}{"anyKey": "anyValue"},
+				DestinationID: core.StringPtr("409ff7eb-221a-4f70-aa21-003f38366409"),
+				DestinationPatch: destinationPatchModelAsPatch,
 			}
 
-			response, err := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptions)
+			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptions)
 			Expect(err).To(BeNil())
 			Expect(response.StatusCode).To(Equal(200))
+			Expect(ibmCloudDatabaseDestination).ToNot(BeNil())
 		})
 	})
 
@@ -214,12 +229,13 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		It(`DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions)`, func() {
 			deleteInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions{
 				InstanceID: core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39"),
-				DestinationID: core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+				DestinationID: core.StringPtr("409ff7eb-221a-4f70-aa21-003f38366409"),
 			}
 
-			response, err := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptions)
+			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptions)
 			Expect(err).To(BeNil())
-			Expect(response.StatusCode).To(Equal(204))
+			Expect(response.StatusCode).To(Equal(202))
+			Expect(ibmCloudDatabaseDestination).ToNot(BeNil())
 		})
 	})
 })
