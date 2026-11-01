@@ -172,7 +172,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		It(`GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions)`, func() {
 			getInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions{
 				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
-				DestinationID: core.StringPtr("d6f05965-dbbc-4566-a653-0d33f87ac60b"),
+				DestinationID: core.StringPtr("86edf115-e470-4aa2-9e26-1fa920fcff00"),
 			}
 
 			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptions)
@@ -196,7 +196,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 
 			updateInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions{
 				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
-				DestinationID: core.StringPtr("d6f05965-dbbc-4566-a653-0d33f87ac60b"),
+				DestinationID: core.StringPtr("86edf115-e470-4aa2-9e26-1fa920fcff00"),
 				DestinationPatch: destinationPatchModelAsPatch,
 			}
 
@@ -229,7 +229,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		It(`DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions)`, func() {
 			deleteInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions{
 				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
-				DestinationID: core.StringPtr("d6f05965-dbbc-4566-a653-0d33f87ac60b"),
+				DestinationID: core.StringPtr("86edf115-e470-4aa2-9e26-1fa920fcff00"),
 			}
 
 			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptions)
