@@ -20,6 +20,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -181,7 +182,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions) - Operation response error`, func() {
-		createVaultAdmintokenPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/admintokens"
+		createVaultAdmintokenPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/admintokens"
 		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -205,7 +206,8 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := secretsManagerInstanceManagementService.CreateVaultAdmintoken(createVaultAdmintokenOptionsModel)
@@ -226,7 +228,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions)`, func() {
-		createVaultAdmintokenPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/admintokens"
+		createVaultAdmintokenPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/admintokens"
 		Context(`Using mock server endpoint with timeout`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -236,13 +238,29 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(createVaultAdmintokenPath))
 					Expect(req.Method).To(Equal("POST"))
 
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
 					// Sleep a short time to support a timeout test
 					time.Sleep(100 * time.Millisecond)
 
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(201)
-					fmt.Fprintf(res, "%s", `{"token": "hvs.CAESIIG_PILmULFYOsEyWHxkZ2mF2a8V...example...p3ZnpWbDF1RUNjUkNTZEg"}`)
+					fmt.Fprintf(res, "%s", `{"token": "hvs.CAESIC202dQW-jogohoywlivU-AMllTdeNT0QBiob9OBmyfnGigKImh2cy5yUkxpcmVaZURzTmw5cgtevFoyelBpYkguYW82SlMQyr0Q"}`)
 				}))
 			})
 			It(`Invoke CreateVaultAdmintoken successfully with retries`, func() {
@@ -256,7 +274,8 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -293,10 +312,26 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(createVaultAdmintokenPath))
 					Expect(req.Method).To(Equal("POST"))
 
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(201)
-					fmt.Fprintf(res, "%s", `{"token": "hvs.CAESIIG_PILmULFYOsEyWHxkZ2mF2a8V...example...p3ZnpWbDF1RUNjUkNTZEg"}`)
+					fmt.Fprintf(res, "%s", `{"token": "hvs.CAESIC202dQW-jogohoywlivU-AMllTdeNT0QBiob9OBmyfnGigKImh2cy5yUkxpcmVaZURzTmw5cgtevFoyelBpYkguYW82SlMQyr0Q"}`)
 				}))
 			})
 			It(`Invoke CreateVaultAdmintoken successfully`, func() {
@@ -315,7 +350,8 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -335,7 +371,8 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
@@ -376,7 +413,8 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -393,7 +431,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions *DeleteInstanceAdmintokensOptions)`, func() {
-		deleteInstanceAdmintokensPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/admintokens"
+		deleteInstanceAdmintokensPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/admintokens"
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -421,7 +459,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the DeleteInstanceAdmintokensOptions model
 				deleteInstanceAdmintokensOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions)
-				deleteInstanceAdmintokensOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				deleteInstanceAdmintokensOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				deleteInstanceAdmintokensOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -439,7 +477,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the DeleteInstanceAdmintokensOptions model
 				deleteInstanceAdmintokensOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions)
-				deleteInstanceAdmintokensOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				deleteInstanceAdmintokensOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				deleteInstanceAdmintokensOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
@@ -461,7 +499,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`GetInstance(getInstanceOptions *GetInstanceOptions) - Operation response error`, func() {
-		getInstancePath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+		getInstancePath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1"
 		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -485,7 +523,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := secretsManagerInstanceManagementService.GetInstance(getInstanceOptionsModel)
@@ -506,7 +544,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`GetInstance(getInstanceOptions *GetInstanceOptions)`, func() {
-		getInstancePath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+		getInstancePath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1"
 		Context(`Using mock server endpoint with timeout`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -522,7 +560,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "name": "Name", "instance_crn": "crn:v1:bluemix:public:secrets-manager:us-south:a/791f3fb10486421e97aa8512f18b7e65:b49ad24d-81d4-5ebc-b9b9-b0937d1c84d5::", "plan": "dedicated", "vault_cluster": {"status": "healthy", "version": "1.21.2+ent.hsm"}, "endpoints": {"public": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}, "private": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}}, "encryption": {"mode": "service_managed", "provider": "key_protect", "key_crn": "crn:v1:bluemix:public:kms:us-south:a/791f5fb10986423e97aa8512f18b7e65:31639268-42e8-4420-9872-590a6ee20506:key:b4af8f76-e6ea-4dc5-89cc-5f1b9bb207cc"}, "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39"}`)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "name": "Name", "instance_crn": "crn:v1:bluemix:public:secrets-manager:us-south:a/791f3fb10486421e97aa8512f18b7e65:b49ad24d-81d4-5ebc-b9b9-b0937d1c84d5::", "plan": "dedicated", "vault_cluster": {"status": "healthy", "version": "1.21.2+ent.hsm"}, "endpoints": {"public": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}, "private": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}}, "encryption": {"mode": "service_managed", "provider": "key_protect", "key_crn": "crn:v1:bluemix:public:kms:us-south:a/791f5fb10986423e97aa8512f18b7e65:31639268-42e8-4420-9872-590a6ee20506:key:b4af8f76-e6ea-4dc5-89cc-5f1b9bb207cc"}, "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1"}`)
 				}))
 			})
 			It(`Invoke GetInstance successfully with retries`, func() {
@@ -536,7 +574,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -576,7 +614,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "name": "Name", "instance_crn": "crn:v1:bluemix:public:secrets-manager:us-south:a/791f3fb10486421e97aa8512f18b7e65:b49ad24d-81d4-5ebc-b9b9-b0937d1c84d5::", "plan": "dedicated", "vault_cluster": {"status": "healthy", "version": "1.21.2+ent.hsm"}, "endpoints": {"public": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}, "private": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}}, "encryption": {"mode": "service_managed", "provider": "key_protect", "key_crn": "crn:v1:bluemix:public:kms:us-south:a/791f5fb10986423e97aa8512f18b7e65:31639268-42e8-4420-9872-590a6ee20506:key:b4af8f76-e6ea-4dc5-89cc-5f1b9bb207cc"}, "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39"}`)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "name": "Name", "instance_crn": "crn:v1:bluemix:public:secrets-manager:us-south:a/791f3fb10486421e97aa8512f18b7e65:b49ad24d-81d4-5ebc-b9b9-b0937d1c84d5::", "plan": "dedicated", "vault_cluster": {"status": "healthy", "version": "1.21.2+ent.hsm"}, "endpoints": {"public": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}, "private": {"vault_api": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud", "vault_ui": "https://f85f512b-e21b-4a9a-ac45-7bbc2f5cew2e.us-south.secrets-manager.appdomain.cloud/ui"}}, "encryption": {"mode": "service_managed", "provider": "key_protect", "key_crn": "crn:v1:bluemix:public:kms:us-south:a/791f5fb10986423e97aa8512f18b7e65:31639268-42e8-4420-9872-590a6ee20506:key:b4af8f76-e6ea-4dc5-89cc-5f1b9bb207cc"}, "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1"}`)
 				}))
 			})
 			It(`Invoke GetInstance successfully`, func() {
@@ -595,7 +633,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -615,7 +653,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
@@ -656,7 +694,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -673,7 +711,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`ListInstanceDestinations(listInstanceDestinationsOptions *ListInstanceDestinationsOptions) - Operation response error`, func() {
-		listInstanceDestinationsPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations"
+		listInstanceDestinationsPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations"
 		Context(`Using mock server endpoint with invalid JSON response`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -698,7 +736,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the ListInstanceDestinationsOptions model
 				listInstanceDestinationsOptionsModel := new(secretsmanagerinstancemanagementv2.ListInstanceDestinationsOptions)
-				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				listInstanceDestinationsOptionsModel.State = core.StringPtr("not_started")
 				listInstanceDestinationsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
@@ -720,7 +758,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`ListInstanceDestinations(listInstanceDestinationsOptions *ListInstanceDestinationsOptions)`, func() {
-		listInstanceDestinationsPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations"
+		listInstanceDestinationsPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations"
 		Context(`Using mock server endpoint with timeout`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -737,7 +775,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"destinations": [{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "crn": "Crn"}], "total": 0}`)
+					fmt.Fprintf(res, "%s", `{"destinations": [{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision"}], "total": 0}`)
 				}))
 			})
 			It(`Invoke ListInstanceDestinations successfully with retries`, func() {
@@ -751,7 +789,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the ListInstanceDestinationsOptions model
 				listInstanceDestinationsOptionsModel := new(secretsmanagerinstancemanagementv2.ListInstanceDestinationsOptions)
-				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				listInstanceDestinationsOptionsModel.State = core.StringPtr("not_started")
 				listInstanceDestinationsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
@@ -793,7 +831,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					// Set mock response
 					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
-					fmt.Fprintf(res, "%s", `{"destinations": [{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "crn": "Crn"}], "total": 0}`)
+					fmt.Fprintf(res, "%s", `{"destinations": [{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision"}], "total": 0}`)
 				}))
 			})
 			It(`Invoke ListInstanceDestinations successfully`, func() {
@@ -812,7 +850,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the ListInstanceDestinationsOptions model
 				listInstanceDestinationsOptionsModel := new(secretsmanagerinstancemanagementv2.ListInstanceDestinationsOptions)
-				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				listInstanceDestinationsOptionsModel.State = core.StringPtr("not_started")
 				listInstanceDestinationsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
@@ -833,7 +871,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the ListInstanceDestinationsOptions model
 				listInstanceDestinationsOptionsModel := new(secretsmanagerinstancemanagementv2.ListInstanceDestinationsOptions)
-				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				listInstanceDestinationsOptionsModel.State = core.StringPtr("not_started")
 				listInstanceDestinationsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
@@ -875,7 +913,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the ListInstanceDestinationsOptions model
 				listInstanceDestinationsOptionsModel := new(secretsmanagerinstancemanagementv2.ListInstanceDestinationsOptions)
-				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				listInstanceDestinationsOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				listInstanceDestinationsOptionsModel.State = core.StringPtr("not_started")
 				listInstanceDestinationsOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
@@ -892,8 +930,142 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 			})
 		})
 	})
+	Describe(`CreateInstanceDestination(createInstanceDestinationOptions *CreateInstanceDestinationOptions) - Operation response error`, func() {
+		createInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations"
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(createInstanceDestinationPath))
+					Expect(req.Method).To(Equal("POST"))
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(202)
+					fmt.Fprint(res, `} this is not valid json {`)
+				}))
+			})
+			It(`Invoke CreateInstanceDestination with error: Operation response processing error`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the CreateDestinationRequestIbmCloudDatabaseDestinationPrototype model
+				createDestinationRequestModel := new(secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+				createDestinationRequestModel.Name = core.StringPtr("my-postgres")
+				createDestinationRequestModel.Type = core.StringPtr("ibm_cloud_database")
+				createDestinationRequestModel.Description = core.StringPtr("Production PostgreSQL database")
+				createDestinationRequestModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+
+				// Construct an instance of the CreateInstanceDestinationOptions model
+				createInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions)
+				createInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createInstanceDestinationOptionsModel.DestinationPrototype = createDestinationRequestModel
+				createInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Expect response parsing to fail since we are receiving a text/plain response
+				result, response, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+
+				// Enable retries and test again
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+				result, response, operationErr = secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
 	Describe(`CreateInstanceDestination(createInstanceDestinationOptions *CreateInstanceDestinationOptions)`, func() {
-		createInstanceDestinationPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations"
+		createInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations"
+		Context(`Using mock server endpoint with timeout`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(createInstanceDestinationPath))
+					Expect(req.Method).To(Equal("POST"))
+
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
+					// Sleep a short time to support a timeout test
+					time.Sleep(100 * time.Millisecond)
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(202)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
+				}))
+			})
+			It(`Invoke CreateInstanceDestination successfully with retries`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+
+				// Construct an instance of the CreateDestinationRequestIbmCloudDatabaseDestinationPrototype model
+				createDestinationRequestModel := new(secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+				createDestinationRequestModel.Name = core.StringPtr("my-postgres")
+				createDestinationRequestModel.Type = core.StringPtr("ibm_cloud_database")
+				createDestinationRequestModel.Description = core.StringPtr("Production PostgreSQL database")
+				createDestinationRequestModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+
+				// Construct an instance of the CreateInstanceDestinationOptions model
+				createInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions)
+				createInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createInstanceDestinationOptionsModel.DestinationPrototype = createDestinationRequestModel
+				createInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with a Context to test a timeout error
+				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc()
+				_, _, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestinationWithContext(ctx, createInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+
+				// Disable retries and test again
+				secretsManagerInstanceManagementService.DisableRetries()
+				result, response, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+				// Re-test the timeout error with retries disabled
+				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc2()
+				_, _, operationErr = secretsManagerInstanceManagementService.CreateInstanceDestinationWithContext(ctx, createInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -919,7 +1091,10 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					}
 					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
 
-					res.WriteHeader(201)
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(202)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
 				}))
 			})
 			It(`Invoke CreateInstanceDestination successfully`, func() {
@@ -931,23 +1106,30 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestination(nil)
+				result, response, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestination(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+
+				// Construct an instance of the CreateDestinationRequestIbmCloudDatabaseDestinationPrototype model
+				createDestinationRequestModel := new(secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+				createDestinationRequestModel.Name = core.StringPtr("my-postgres")
+				createDestinationRequestModel.Type = core.StringPtr("ibm_cloud_database")
+				createDestinationRequestModel.Description = core.StringPtr("Production PostgreSQL database")
+				createDestinationRequestModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
 
 				// Construct an instance of the CreateInstanceDestinationOptions model
 				createInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions)
-				createInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
-				createInstanceDestinationOptionsModel.Name = core.StringPtr("my-postgres")
-				createInstanceDestinationOptionsModel.Type = core.StringPtr("ibm_cloud_database")
-				createInstanceDestinationOptionsModel.Description = core.StringPtr("Production PostgreSQL database")
-				createInstanceDestinationOptionsModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+				createInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createInstanceDestinationOptionsModel.DestinationPrototype = createDestinationRequestModel
 				createInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
+				result, response, operationErr = secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
 			})
 			It(`Invoke CreateInstanceDestination with error: Operation validation and request error`, func() {
 				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
@@ -957,27 +1139,121 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
+				// Construct an instance of the CreateDestinationRequestIbmCloudDatabaseDestinationPrototype model
+				createDestinationRequestModel := new(secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+				createDestinationRequestModel.Name = core.StringPtr("my-postgres")
+				createDestinationRequestModel.Type = core.StringPtr("ibm_cloud_database")
+				createDestinationRequestModel.Description = core.StringPtr("Production PostgreSQL database")
+				createDestinationRequestModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+
 				// Construct an instance of the CreateInstanceDestinationOptions model
 				createInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions)
-				createInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
-				createInstanceDestinationOptionsModel.Name = core.StringPtr("my-postgres")
-				createInstanceDestinationOptionsModel.Type = core.StringPtr("ibm_cloud_database")
-				createInstanceDestinationOptionsModel.Description = core.StringPtr("Production PostgreSQL database")
-				createInstanceDestinationOptionsModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+				createInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createInstanceDestinationOptionsModel.DestinationPrototype = createDestinationRequestModel
 				createInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
+				result, response, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
 				// Construct a second instance of the CreateInstanceDestinationOptions model with no property values
 				createInstanceDestinationOptionsModelNew := new(secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModelNew)
+				result, response, operationErr = secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(202)
+				}))
+			})
+			It(`Invoke CreateInstanceDestination successfully`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the CreateDestinationRequestIbmCloudDatabaseDestinationPrototype model
+				createDestinationRequestModel := new(secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+				createDestinationRequestModel.Name = core.StringPtr("my-postgres")
+				createDestinationRequestModel.Type = core.StringPtr("ibm_cloud_database")
+				createDestinationRequestModel.Description = core.StringPtr("Production PostgreSQL database")
+				createDestinationRequestModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+
+				// Construct an instance of the CreateInstanceDestinationOptions model
+				createInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.CreateInstanceDestinationOptions)
+				createInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createInstanceDestinationOptionsModel.DestinationPrototype = createDestinationRequestModel
+				createInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := secretsManagerInstanceManagementService.CreateInstanceDestination(createInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions) - Operation response error`, func() {
+		getInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getInstanceDestinationPath))
+					Expect(req.Method).To(Equal("GET"))
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprint(res, `} this is not valid json {`)
+				}))
+			})
+			It(`Invoke GetInstanceDestination with error: Operation response processing error`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the GetInstanceDestinationOptions model
+				getInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions)
+				getInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				getInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Expect response parsing to fail since we are receiving a text/plain response
+				result, response, operationErr := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+
+				// Enable retries and test again
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+				result, response, operationErr = secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
 			})
 			AfterEach(func() {
 				testServer.Close()
@@ -985,7 +1261,65 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions)`, func() {
-		getInstanceDestinationPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		getInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		Context(`Using mock server endpoint with timeout`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(getInstanceDestinationPath))
+					Expect(req.Method).To(Equal("GET"))
+
+					// Sleep a short time to support a timeout test
+					time.Sleep(100 * time.Millisecond)
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
+				}))
+			})
+			It(`Invoke GetInstanceDestination successfully with retries`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+
+				// Construct an instance of the GetInstanceDestinationOptions model
+				getInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions)
+				getInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				getInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with a Context to test a timeout error
+				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc()
+				_, _, operationErr := secretsManagerInstanceManagementService.GetInstanceDestinationWithContext(ctx, getInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+
+				// Disable retries and test again
+				secretsManagerInstanceManagementService.DisableRetries()
+				result, response, operationErr := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+				// Re-test the timeout error with retries disabled
+				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc2()
+				_, _, operationErr = secretsManagerInstanceManagementService.GetInstanceDestinationWithContext(ctx, getInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -995,7 +1329,10 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(getInstanceDestinationPath))
 					Expect(req.Method).To(Equal("GET"))
 
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
 				}))
 			})
 			It(`Invoke GetInstanceDestination successfully`, func() {
@@ -1007,20 +1344,23 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := secretsManagerInstanceManagementService.GetInstanceDestination(nil)
+				result, response, operationErr := secretsManagerInstanceManagementService.GetInstanceDestination(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
 
 				// Construct an instance of the GetInstanceDestinationOptions model
 				getInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions)
-				getInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
 				getInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
+				result, response, operationErr = secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
 			})
 			It(`Invoke GetInstanceDestination with error: Operation validation and request error`, func() {
 				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
@@ -1032,22 +1372,113 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceDestinationOptions model
 				getInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions)
-				getInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
 				getInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
+				result, response, operationErr := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
 				// Construct a second instance of the GetInstanceDestinationOptions model with no property values
 				getInstanceDestinationOptionsModelNew := new(secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModelNew)
+				result, response, operationErr = secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke GetInstanceDestination successfully`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the GetInstanceDestinationOptions model
+				getInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions)
+				getInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				getInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`UpdateInstanceDestination(updateInstanceDestinationOptions *UpdateInstanceDestinationOptions) - Operation response error`, func() {
+		updateInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(updateInstanceDestinationPath))
+					Expect(req.Method).To(Equal("PATCH"))
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprint(res, `} this is not valid json {`)
+				}))
+			})
+			It(`Invoke UpdateInstanceDestination with error: Operation response processing error`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the DestinationPatch model
+				destinationPatchModel := new(secretsmanagerinstancemanagementv2.DestinationPatch)
+				destinationPatchModel.Name = core.StringPtr("my-postgres-updated")
+				destinationPatchModel.Description = core.StringPtr("Production PostgreSQL database")
+				destinationPatchModelAsPatch, asPatchErr := destinationPatchModel.AsPatch()
+				Expect(asPatchErr).To(BeNil())
+
+				// Construct an instance of the UpdateInstanceDestinationOptions model
+				updateInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions)
+				updateInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				updateInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				updateInstanceDestinationOptionsModel.DestinationPatch = destinationPatchModelAsPatch
+				updateInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Expect response parsing to fail since we are receiving a text/plain response
+				result, response, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+
+				// Enable retries and test again
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+				result, response, operationErr = secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
 			})
 			AfterEach(func() {
 				testServer.Close()
@@ -1055,7 +1486,89 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`UpdateInstanceDestination(updateInstanceDestinationOptions *UpdateInstanceDestinationOptions)`, func() {
-		updateInstanceDestinationPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		updateInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		Context(`Using mock server endpoint with timeout`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(updateInstanceDestinationPath))
+					Expect(req.Method).To(Equal("PATCH"))
+
+					// For gzip-disabled operation, verify Content-Encoding is not set.
+					Expect(req.Header.Get("Content-Encoding")).To(BeEmpty())
+
+					// If there is a body, then make sure we can read it
+					bodyBuf := new(bytes.Buffer)
+					if req.Header.Get("Content-Encoding") == "gzip" {
+						body, err := core.NewGzipDecompressionReader(req.Body)
+						Expect(err).To(BeNil())
+						_, err = bodyBuf.ReadFrom(body)
+						Expect(err).To(BeNil())
+					} else {
+						_, err := bodyBuf.ReadFrom(req.Body)
+						Expect(err).To(BeNil())
+					}
+					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
+
+					// Sleep a short time to support a timeout test
+					time.Sleep(100 * time.Millisecond)
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
+				}))
+			})
+			It(`Invoke UpdateInstanceDestination successfully with retries`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+
+				// Construct an instance of the DestinationPatch model
+				destinationPatchModel := new(secretsmanagerinstancemanagementv2.DestinationPatch)
+				destinationPatchModel.Name = core.StringPtr("my-postgres-updated")
+				destinationPatchModel.Description = core.StringPtr("Production PostgreSQL database")
+				destinationPatchModelAsPatch, asPatchErr := destinationPatchModel.AsPatch()
+				Expect(asPatchErr).To(BeNil())
+
+				// Construct an instance of the UpdateInstanceDestinationOptions model
+				updateInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions)
+				updateInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				updateInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				updateInstanceDestinationOptionsModel.DestinationPatch = destinationPatchModelAsPatch
+				updateInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with a Context to test a timeout error
+				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc()
+				_, _, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestinationWithContext(ctx, updateInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+
+				// Disable retries and test again
+				secretsManagerInstanceManagementService.DisableRetries()
+				result, response, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+				// Re-test the timeout error with retries disabled
+				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc2()
+				_, _, operationErr = secretsManagerInstanceManagementService.UpdateInstanceDestinationWithContext(ctx, updateInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -1081,7 +1594,10 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					}
 					fmt.Fprintf(GinkgoWriter, "  Request body: %s", bodyBuf.String())
 
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
 					res.WriteHeader(200)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
 				}))
 			})
 			It(`Invoke UpdateInstanceDestination successfully`, func() {
@@ -1093,21 +1609,31 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestination(nil)
+				result, response, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestination(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+
+				// Construct an instance of the DestinationPatch model
+				destinationPatchModel := new(secretsmanagerinstancemanagementv2.DestinationPatch)
+				destinationPatchModel.Name = core.StringPtr("my-postgres-updated")
+				destinationPatchModel.Description = core.StringPtr("Production PostgreSQL database")
+				destinationPatchModelAsPatch, asPatchErr := destinationPatchModel.AsPatch()
+				Expect(asPatchErr).To(BeNil())
 
 				// Construct an instance of the UpdateInstanceDestinationOptions model
 				updateInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions)
-				updateInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				updateInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				updateInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
-				updateInstanceDestinationOptionsModel.RequestBody = map[string]interface{}{"anyKey": "anyValue"}
+				updateInstanceDestinationOptionsModel.DestinationPatch = destinationPatchModelAsPatch
 				updateInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
+				result, response, operationErr = secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
 			})
 			It(`Invoke UpdateInstanceDestination with error: Operation validation and request error`, func() {
 				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
@@ -1117,25 +1643,123 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
+				// Construct an instance of the DestinationPatch model
+				destinationPatchModel := new(secretsmanagerinstancemanagementv2.DestinationPatch)
+				destinationPatchModel.Name = core.StringPtr("my-postgres-updated")
+				destinationPatchModel.Description = core.StringPtr("Production PostgreSQL database")
+				destinationPatchModelAsPatch, asPatchErr := destinationPatchModel.AsPatch()
+				Expect(asPatchErr).To(BeNil())
+
 				// Construct an instance of the UpdateInstanceDestinationOptions model
 				updateInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions)
-				updateInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				updateInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				updateInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
-				updateInstanceDestinationOptionsModel.RequestBody = map[string]interface{}{"anyKey": "anyValue"}
+				updateInstanceDestinationOptionsModel.DestinationPatch = destinationPatchModelAsPatch
 				updateInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
+				result, response, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
 				// Construct a second instance of the UpdateInstanceDestinationOptions model with no property values
 				updateInstanceDestinationOptionsModelNew := new(secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModelNew)
+				result, response, operationErr = secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(200)
+				}))
+			})
+			It(`Invoke UpdateInstanceDestination successfully`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the DestinationPatch model
+				destinationPatchModel := new(secretsmanagerinstancemanagementv2.DestinationPatch)
+				destinationPatchModel.Name = core.StringPtr("my-postgres-updated")
+				destinationPatchModel.Description = core.StringPtr("Production PostgreSQL database")
+				destinationPatchModelAsPatch, asPatchErr := destinationPatchModel.AsPatch()
+				Expect(asPatchErr).To(BeNil())
+
+				// Construct an instance of the UpdateInstanceDestinationOptions model
+				updateInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions)
+				updateInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				updateInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				updateInstanceDestinationOptionsModel.DestinationPatch = destinationPatchModelAsPatch
+				updateInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := secretsManagerInstanceManagementService.UpdateInstanceDestination(updateInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+	})
+	Describe(`DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions) - Operation response error`, func() {
+		deleteInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		Context(`Using mock server endpoint with invalid JSON response`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(deleteInstanceDestinationPath))
+					Expect(req.Method).To(Equal("DELETE"))
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(202)
+					fmt.Fprint(res, `} this is not valid json {`)
+				}))
+			})
+			It(`Invoke DeleteInstanceDestination with error: Operation response processing error`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the DeleteInstanceDestinationOptions model
+				deleteInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions)
+				deleteInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				deleteInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				deleteInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Expect response parsing to fail since we are receiving a text/plain response
+				result, response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
+
+				// Enable retries and test again
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+				result, response, operationErr = secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).To(BeNil())
 			})
 			AfterEach(func() {
 				testServer.Close()
@@ -1143,7 +1767,65 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 		})
 	})
 	Describe(`DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions)`, func() {
-		deleteInstanceDestinationPath := "/v2/instances/bfc50c2e-d66d-4f37-9ccf-9713f8325b39/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		deleteInstanceDestinationPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/b2c3d4e5-f6a7-8901-bcde-f12345678901"
+		Context(`Using mock server endpoint with timeout`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Verify the contents of the request
+					Expect(req.URL.EscapedPath()).To(Equal(deleteInstanceDestinationPath))
+					Expect(req.Method).To(Equal("DELETE"))
+
+					// Sleep a short time to support a timeout test
+					time.Sleep(100 * time.Millisecond)
+
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(202)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
+				}))
+			})
+			It(`Invoke DeleteInstanceDestination successfully with retries`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+				secretsManagerInstanceManagementService.EnableRetries(0, 0)
+
+				// Construct an instance of the DeleteInstanceDestinationOptions model
+				deleteInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions)
+				deleteInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				deleteInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				deleteInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation with a Context to test a timeout error
+				ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc()
+				_, _, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestinationWithContext(ctx, deleteInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+
+				// Disable retries and test again
+				secretsManagerInstanceManagementService.DisableRetries()
+				result, response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
+				// Re-test the timeout error with retries disabled
+				ctx, cancelFunc2 := context.WithTimeout(context.Background(), 80*time.Millisecond)
+				defer cancelFunc2()
+				_, _, operationErr = secretsManagerInstanceManagementService.DeleteInstanceDestinationWithContext(ctx, deleteInstanceDestinationOptionsModel)
+				Expect(operationErr).ToNot(BeNil())
+				Expect(operationErr.Error()).To(ContainSubstring("deadline exceeded"))
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
@@ -1153,7 +1835,10 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 					Expect(req.URL.EscapedPath()).To(Equal(deleteInstanceDestinationPath))
 					Expect(req.Method).To(Equal("DELETE"))
 
-					res.WriteHeader(204)
+					// Set mock response
+					res.Header().Set("Content-type", "application/json")
+					res.WriteHeader(202)
+					fmt.Fprintf(res, "%s", `{"id": "9fab83da-98cb-4f18-a7ba-b6f0435c9673", "href": "https://us-south.secrets-manager.cloud.ibm.com/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/destinations/ce8aa9a4-8cde-4b63-8156-d4a8b252beeb", "name": "Name", "type": "ibm_cloud_database", "description": "Description", "state": "not_started", "created_at": "2019-01-01T12:00:00.000Z", "updated_at": "2019-01-01T12:00:00.000Z", "created_by": "CreatedBy", "message": "failed to provision", "crn": "Crn"}`)
 				}))
 			})
 			It(`Invoke DeleteInstanceDestination successfully`, func() {
@@ -1165,20 +1850,23 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestination(nil)
+				result, response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestination(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
 
 				// Construct an instance of the DeleteInstanceDestinationOptions model
 				deleteInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions)
-				deleteInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				deleteInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				deleteInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
 				deleteInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
+				result, response, operationErr = secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
+				Expect(result).ToNot(BeNil())
+
 			})
 			It(`Invoke DeleteInstanceDestination with error: Operation validation and request error`, func() {
 				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
@@ -1190,22 +1878,59 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the DeleteInstanceDestinationOptions model
 				deleteInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions)
-				deleteInstanceDestinationOptionsModel.InstanceID = core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				deleteInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				deleteInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
 				deleteInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
+				result, response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
 				// Construct a second instance of the DeleteInstanceDestinationOptions model with no property values
 				deleteInstanceDestinationOptionsModelNew := new(secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModelNew)
+				result, response, operationErr = secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
+				Expect(result).To(BeNil())
+			})
+			AfterEach(func() {
+				testServer.Close()
+			})
+		})
+		Context(`Using mock server endpoint with missing response body`, func() {
+			BeforeEach(func() {
+				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
+					defer GinkgoRecover()
+
+					// Set success status code with no respoonse body
+					res.WriteHeader(202)
+				}))
+			})
+			It(`Invoke DeleteInstanceDestination successfully`, func() {
+				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
+					URL:           testServer.URL,
+					Authenticator: &core.NoAuthAuthenticator{},
+				})
+				Expect(serviceErr).To(BeNil())
+				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
+
+				// Construct an instance of the DeleteInstanceDestinationOptions model
+				deleteInstanceDestinationOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions)
+				deleteInstanceDestinationOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				deleteInstanceDestinationOptionsModel.DestinationID = core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")
+				deleteInstanceDestinationOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+
+				// Invoke operation
+				result, response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptionsModel)
+				Expect(operationErr).To(BeNil())
+				Expect(response).ToNot(BeNil())
+
+				// Verify a nil result
+				Expect(result).To(BeNil())
 			})
 			AfterEach(func() {
 				testServer.Close()
@@ -1219,107 +1944,186 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Authenticator: &core.NoAuthAuthenticator{},
 			})
 			It(`Invoke NewCreateInstanceDestinationOptions successfully`, func() {
+				// Construct an instance of the CreateDestinationRequestIbmCloudDatabaseDestinationPrototype model
+				createDestinationRequestModel := new(secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+				Expect(createDestinationRequestModel).ToNot(BeNil())
+				createDestinationRequestModel.Name = core.StringPtr("testString")
+				createDestinationRequestModel.Type = core.StringPtr("ibm_cloud_database")
+				createDestinationRequestModel.Description = core.StringPtr("Production PostgreSQL database")
+				createDestinationRequestModel.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+				Expect(createDestinationRequestModel.Name).To(Equal(core.StringPtr("testString")))
+				Expect(createDestinationRequestModel.Type).To(Equal(core.StringPtr("ibm_cloud_database")))
+				Expect(createDestinationRequestModel.Description).To(Equal(core.StringPtr("Production PostgreSQL database")))
+				Expect(createDestinationRequestModel.Crn).To(Equal(core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")))
+
 				// Construct an instance of the CreateInstanceDestinationOptions model
-				instanceID := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
-				createInstanceDestinationOptionsModel := secretsManagerInstanceManagementService.NewCreateInstanceDestinationOptions(instanceID)
-				createInstanceDestinationOptionsModel.SetInstanceID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
-				createInstanceDestinationOptionsModel.SetName("my-postgres")
-				createInstanceDestinationOptionsModel.SetType("ibm_cloud_database")
-				createInstanceDestinationOptionsModel.SetDescription("Production PostgreSQL database")
-				createInstanceDestinationOptionsModel.SetCrn("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
+				var destinationPrototype secretsmanagerinstancemanagementv2.CreateDestinationRequestIntf = nil
+				createInstanceDestinationOptionsModel := secretsManagerInstanceManagementService.NewCreateInstanceDestinationOptions(instanceID, destinationPrototype)
+				createInstanceDestinationOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createInstanceDestinationOptionsModel.SetDestinationPrototype(createDestinationRequestModel)
 				createInstanceDestinationOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(createInstanceDestinationOptionsModel).ToNot(BeNil())
-				Expect(createInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
-				Expect(createInstanceDestinationOptionsModel.Name).To(Equal(core.StringPtr("my-postgres")))
-				Expect(createInstanceDestinationOptionsModel.Type).To(Equal(core.StringPtr("ibm_cloud_database")))
-				Expect(createInstanceDestinationOptionsModel.Description).To(Equal(core.StringPtr("Production PostgreSQL database")))
-				Expect(createInstanceDestinationOptionsModel.Crn).To(Equal(core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")))
+				Expect(createInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
+				Expect(createInstanceDestinationOptionsModel.DestinationPrototype).To(Equal(createDestinationRequestModel))
 				Expect(createInstanceDestinationOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewCreateVaultAdmintokenOptions successfully`, func() {
 				// Construct an instance of the CreateVaultAdmintokenOptions model
-				id := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+				id := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
 				createVaultAdmintokenOptionsModel := secretsManagerInstanceManagementService.NewCreateVaultAdmintokenOptions(id)
-				createVaultAdmintokenOptionsModel.SetID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				createVaultAdmintokenOptionsModel.SetID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.SetResponseWrapping(true)
 				createVaultAdmintokenOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(createVaultAdmintokenOptionsModel).ToNot(BeNil())
-				Expect(createVaultAdmintokenOptionsModel.ID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
+				Expect(createVaultAdmintokenOptionsModel.ID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
+				Expect(createVaultAdmintokenOptionsModel.ResponseWrapping).To(Equal(core.BoolPtr(true)))
 				Expect(createVaultAdmintokenOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewDeleteInstanceAdmintokensOptions successfully`, func() {
 				// Construct an instance of the DeleteInstanceAdmintokensOptions model
-				id := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+				id := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
 				deleteInstanceAdmintokensOptionsModel := secretsManagerInstanceManagementService.NewDeleteInstanceAdmintokensOptions(id)
-				deleteInstanceAdmintokensOptionsModel.SetID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				deleteInstanceAdmintokensOptionsModel.SetID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				deleteInstanceAdmintokensOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(deleteInstanceAdmintokensOptionsModel).ToNot(BeNil())
-				Expect(deleteInstanceAdmintokensOptionsModel.ID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
+				Expect(deleteInstanceAdmintokensOptionsModel.ID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(deleteInstanceAdmintokensOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewDeleteInstanceDestinationOptions successfully`, func() {
 				// Construct an instance of the DeleteInstanceDestinationOptions model
-				instanceID := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
 				destinationID := "b2c3d4e5-f6a7-8901-bcde-f12345678901"
 				deleteInstanceDestinationOptionsModel := secretsManagerInstanceManagementService.NewDeleteInstanceDestinationOptions(instanceID, destinationID)
-				deleteInstanceDestinationOptionsModel.SetInstanceID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				deleteInstanceDestinationOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				deleteInstanceDestinationOptionsModel.SetDestinationID("b2c3d4e5-f6a7-8901-bcde-f12345678901")
 				deleteInstanceDestinationOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(deleteInstanceDestinationOptionsModel).ToNot(BeNil())
-				Expect(deleteInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
+				Expect(deleteInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(deleteInstanceDestinationOptionsModel.DestinationID).To(Equal(core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")))
 				Expect(deleteInstanceDestinationOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewGetInstanceDestinationOptions successfully`, func() {
 				// Construct an instance of the GetInstanceDestinationOptions model
-				instanceID := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
 				destinationID := "b2c3d4e5-f6a7-8901-bcde-f12345678901"
 				getInstanceDestinationOptionsModel := secretsManagerInstanceManagementService.NewGetInstanceDestinationOptions(instanceID, destinationID)
-				getInstanceDestinationOptionsModel.SetInstanceID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceDestinationOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceDestinationOptionsModel.SetDestinationID("b2c3d4e5-f6a7-8901-bcde-f12345678901")
 				getInstanceDestinationOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(getInstanceDestinationOptionsModel).ToNot(BeNil())
-				Expect(getInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
+				Expect(getInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(getInstanceDestinationOptionsModel.DestinationID).To(Equal(core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")))
 				Expect(getInstanceDestinationOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewGetInstanceOptions successfully`, func() {
 				// Construct an instance of the GetInstanceOptions model
-				id := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+				id := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
 				getInstanceOptionsModel := secretsManagerInstanceManagementService.NewGetInstanceOptions(id)
-				getInstanceOptionsModel.SetID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				getInstanceOptionsModel.SetID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(getInstanceOptionsModel).ToNot(BeNil())
-				Expect(getInstanceOptionsModel.ID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
+				Expect(getInstanceOptionsModel.ID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(getInstanceOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewListInstanceDestinationsOptions successfully`, func() {
 				// Construct an instance of the ListInstanceDestinationsOptions model
-				instanceID := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
 				listInstanceDestinationsOptionsModel := secretsManagerInstanceManagementService.NewListInstanceDestinationsOptions(instanceID)
-				listInstanceDestinationsOptionsModel.SetInstanceID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				listInstanceDestinationsOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				listInstanceDestinationsOptionsModel.SetState("not_started")
 				listInstanceDestinationsOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(listInstanceDestinationsOptionsModel).ToNot(BeNil())
-				Expect(listInstanceDestinationsOptionsModel.InstanceID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
+				Expect(listInstanceDestinationsOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(listInstanceDestinationsOptionsModel.State).To(Equal(core.StringPtr("not_started")))
 				Expect(listInstanceDestinationsOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewUpdateInstanceDestinationOptions successfully`, func() {
 				// Construct an instance of the UpdateInstanceDestinationOptions model
-				instanceID := "bfc50c2e-d66d-4f37-9ccf-9713f8325b39"
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
 				destinationID := "b2c3d4e5-f6a7-8901-bcde-f12345678901"
-				requestBody := map[string]interface{}{"anyKey": "anyValue"}
-				updateInstanceDestinationOptionsModel := secretsManagerInstanceManagementService.NewUpdateInstanceDestinationOptions(instanceID, destinationID, requestBody)
-				updateInstanceDestinationOptionsModel.SetInstanceID("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")
+				destinationPatch := map[string]interface{}{"anyKey": "anyValue"}
+				updateInstanceDestinationOptionsModel := secretsManagerInstanceManagementService.NewUpdateInstanceDestinationOptions(instanceID, destinationID, destinationPatch)
+				updateInstanceDestinationOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				updateInstanceDestinationOptionsModel.SetDestinationID("b2c3d4e5-f6a7-8901-bcde-f12345678901")
-				updateInstanceDestinationOptionsModel.SetRequestBody(map[string]interface{}{"anyKey": "anyValue"})
+				updateInstanceDestinationOptionsModel.SetDestinationPatch(map[string]interface{}{"anyKey": "anyValue"})
 				updateInstanceDestinationOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(updateInstanceDestinationOptionsModel).ToNot(BeNil())
-				Expect(updateInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("bfc50c2e-d66d-4f37-9ccf-9713f8325b39")))
+				Expect(updateInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(updateInstanceDestinationOptionsModel.DestinationID).To(Equal(core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")))
-				Expect(updateInstanceDestinationOptionsModel.RequestBody).To(Equal(map[string]interface{}{"anyKey": "anyValue"}))
+				Expect(updateInstanceDestinationOptionsModel.DestinationPatch).To(Equal(map[string]interface{}{"anyKey": "anyValue"}))
 				Expect(updateInstanceDestinationOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
+			It(`Invoke NewCreateDestinationRequestIbmCloudDatabaseDestinationPrototype successfully`, func() {
+				name := "testString"
+				typeVar := "ibm_cloud_database"
+				crn := "crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::"
+				_model, err := secretsManagerInstanceManagementService.NewCreateDestinationRequestIbmCloudDatabaseDestinationPrototype(name, typeVar, crn)
+				Expect(_model).ToNot(BeNil())
+				Expect(err).To(BeNil())
+			})
+		})
+	})
+	Describe(`Model unmarshaling tests`, func() {
+		It(`Invoke UnmarshalCreateDestinationRequest successfully`, func() {
+			// Construct an instance of the model.
+			model := new(secretsmanagerinstancemanagementv2.CreateDestinationRequest)
+			model.Name = core.StringPtr("testString")
+			model.Type = core.StringPtr("ibm_cloud_database")
+			model.Description = core.StringPtr("Production PostgreSQL database")
+			model.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result interface{}
+			err = secretsmanagerinstancemanagementv2.UnmarshalCreateDestinationRequest(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+		})
+		It(`Invoke UnmarshalDestinationPatch successfully`, func() {
+			// Construct an instance of the model.
+			model := new(secretsmanagerinstancemanagementv2.DestinationPatch)
+			model.Name = core.StringPtr("production-postgres-db")
+			model.Description = core.StringPtr("Updated description for production database")
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result *secretsmanagerinstancemanagementv2.DestinationPatch
+			err = secretsmanagerinstancemanagementv2.UnmarshalDestinationPatch(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+			Expect(result).To(Equal(model))
+		})
+		It(`Invoke UnmarshalCreateDestinationRequestIbmCloudDatabaseDestinationPrototype successfully`, func() {
+			// Construct an instance of the model.
+			model := new(secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype)
+			model.Name = core.StringPtr("testString")
+			model.Type = core.StringPtr("ibm_cloud_database")
+			model.Description = core.StringPtr("Production PostgreSQL database")
+			model.Crn = core.StringPtr("crn:v1:bluemix:public:databases-for-postgresql:us-south:a/e91c8f42b3d74e1a9c2f05d8b67a3e10:3f8b1c7a-9d42-4e6f-b8a5-2c1d9e7f4b83::")
+
+			b, err := json.Marshal(model)
+			Expect(err).To(BeNil())
+
+			var raw map[string]json.RawMessage
+			err = json.Unmarshal(b, &raw)
+			Expect(err).To(BeNil())
+
+			var result *secretsmanagerinstancemanagementv2.CreateDestinationRequestIbmCloudDatabaseDestinationPrototype
+			err = secretsmanagerinstancemanagementv2.UnmarshalCreateDestinationRequestIbmCloudDatabaseDestinationPrototype(raw, &result)
+			Expect(err).To(BeNil())
+			Expect(result).ToNot(BeNil())
+			Expect(result).To(Equal(model))
 		})
 	})
 	Describe(`Utility function tests`, func() {
