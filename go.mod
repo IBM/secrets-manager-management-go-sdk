@@ -5,7 +5,7 @@ go 1.26.0
 replace github.com/IBM/secrets-manager-management-go-sdk/v2/common => ./common
 
 require (
-	github.com/IBM/go-sdk-core/v5 v5.25.1
+	github.com/IBM/go-sdk-core/v5 v5.25.2
 	github.com/go-openapi/strfmt v0.27.4
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.44.0
@@ -13,7 +13,7 @@ require (
 
 require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.15 // indirect
+	github.com/gabriel-vasile/mimetype v1.4.16 // indirect
 	github.com/go-openapi/errors v0.22.9 // indirect
 	github.com/go-playground/locales v0.14.2 // indirect
 	github.com/go-playground/universal-translator v0.18.2 // indirect
