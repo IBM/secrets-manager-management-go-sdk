@@ -97,7 +97,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 		It(`CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions)`, func() {
 			createVaultAdmintokenOptions := &secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions{
-				ID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
+				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
 				ResponseWrapping: core.BoolPtr(true),
 			}
 
@@ -114,7 +114,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 		It(`GetInstance(getInstanceOptions *GetInstanceOptions)`, func() {
 			getInstanceOptions := &secretsmanagerinstancemanagementv2.GetInstanceOptions{
-				ID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
+				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
 			}
 
 			instance, response, err := secretsManagerInstanceManagementService.GetInstance(getInstanceOptions)
@@ -172,7 +172,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		It(`GetInstanceDestination(getInstanceDestinationOptions *GetInstanceDestinationOptions)`, func() {
 			getInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.GetInstanceDestinationOptions{
 				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
-				DestinationID: core.StringPtr("d6f05965-dbbc-4566-a653-0d33f87ac60b"),
+				DestinationID: core.StringPtr("43104d53-54c3-404d-ba8b-44f724ea0ef6"),
 			}
 
 			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.GetInstanceDestination(getInstanceDestinationOptions)
@@ -196,7 +196,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 
 			updateInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.UpdateInstanceDestinationOptions{
 				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
-				DestinationID: core.StringPtr("d6f05965-dbbc-4566-a653-0d33f87ac60b"),
+				DestinationID: core.StringPtr("43104d53-54c3-404d-ba8b-44f724ea0ef6"),
 				DestinationPatch: destinationPatchModelAsPatch,
 			}
 
@@ -207,16 +207,16 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		})
 	})
 
-	Describe(`DeleteInstanceAdmintokens - Delete admin tokens`, func() {
+	Describe(`DeleteVaultAdmintokens - Delete admin tokens`, func() {
 		BeforeEach(func() {
 			shouldSkipTest()
 		})
-		It(`DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions *DeleteInstanceAdmintokensOptions)`, func() {
-			deleteInstanceAdmintokensOptions := &secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions{
-				ID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
+		It(`DeleteVaultAdmintokens(deleteVaultAdmintokensOptions *DeleteVaultAdmintokensOptions)`, func() {
+			deleteVaultAdmintokensOptions := &secretsmanagerinstancemanagementv2.DeleteVaultAdmintokensOptions{
+				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
 			}
 
-			response, err := secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions)
+			response, err := secretsManagerInstanceManagementService.DeleteVaultAdmintokens(deleteVaultAdmintokensOptions)
 			Expect(err).To(BeNil())
 			Expect(response.StatusCode).To(Equal(204))
 		})
@@ -229,7 +229,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Integration Tests`, func() 
 		It(`DeleteInstanceDestination(deleteInstanceDestinationOptions *DeleteInstanceDestinationOptions)`, func() {
 			deleteInstanceDestinationOptions := &secretsmanagerinstancemanagementv2.DeleteInstanceDestinationOptions{
 				InstanceID: core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1"),
-				DestinationID: core.StringPtr("d6f05965-dbbc-4566-a653-0d33f87ac60b"),
+				DestinationID: core.StringPtr("43104d53-54c3-404d-ba8b-44f724ea0ef6"),
 			}
 
 			ibmCloudDatabaseDestination, response, err := secretsManagerInstanceManagementService.DeleteInstanceDestination(deleteInstanceDestinationOptions)

@@ -38,7 +38,7 @@ import (
 // instances of the Vault Dedicated plan.
 // - Get service instance details including cluster state, endpoints, and key management service.
 // - Generate a Vault admin token for authenticating to your Vault Dedicated cluster.
-// - Revoke all active Vault admin tokens.
+// - Delete all active Vault admin tokens.
 // - Request payloads must not exceed 1 MB; requests larger than this limit will be rejected with a `413 Payload Too
 // Large` response.
 //
@@ -190,7 +190,7 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Disa
 
 // CreateVaultAdmintoken : Create admin token
 // Generate a Vault admin token for authenticating to your Vault Dedicated cluster. The token is valid for 1 hour and
-// grants administrative privileges. Use only for initial setup and cluster management, then revoke immediately.
+// grants administrative privileges. Use only for initial setup and cluster management, then delete immediately.
 // Optionally, set response_wrapping to true in the request body to receive a Vault response-wrapped token instead of a
 // plain admin token.
 func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) CreateVaultAdmintoken(createVaultAdmintokenOptions *CreateVaultAdmintokenOptions) (result TokenIntf, response *core.DetailedResponse, err error) {
@@ -213,13 +213,13 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Crea
 	}
 
 	pathParamsMap := map[string]string{
-		"id": *createVaultAdmintokenOptions.ID,
+		"instance_id": *createVaultAdmintokenOptions.InstanceID,
 	}
 
 	builder := core.NewRequestBuilder(core.POST)
 	builder = builder.WithContext(ctx)
 	builder.EnableGzipCompression = secretsManagerInstanceManagement.GetEnableGzipCompression()
-	_, err = builder.ResolveRequestURL(secretsManagerInstanceManagement.Service.Options.URL, `/v2/instances/{id}/admintokens`, pathParamsMap)
+	_, err = builder.ResolveRequestURL(secretsManagerInstanceManagement.Service.Options.URL, `/v2/instances/{instance_id}/admintokens`, pathParamsMap)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
@@ -271,46 +271,47 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Crea
 	return
 }
 
-// DeleteInstanceAdmintokens : Delete admin tokens
-// Revoke all active Vault admin tokens. This immediately invalidates all existing admin tokens.
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions *DeleteInstanceAdmintokensOptions) (response *core.DetailedResponse, err error) {
-	response, err = secretsManagerInstanceManagement.DeleteInstanceAdmintokensWithContext(context.Background(), deleteInstanceAdmintokensOptions)
+// DeleteVaultAdmintokens : Delete admin tokens
+// Delete all active Vault admin tokens. This immediately invalidates all existing admin tokens including wrapped
+// tokens.
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteVaultAdmintokens(deleteVaultAdmintokensOptions *DeleteVaultAdmintokensOptions) (response *core.DetailedResponse, err error) {
+	response, err = secretsManagerInstanceManagement.DeleteVaultAdmintokensWithContext(context.Background(), deleteVaultAdmintokensOptions)
 	err = core.RepurposeSDKProblem(err, "")
 	return
 }
 
-// DeleteInstanceAdmintokensWithContext is an alternate form of the DeleteInstanceAdmintokens method which supports a Context parameter
-func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteInstanceAdmintokensWithContext(ctx context.Context, deleteInstanceAdmintokensOptions *DeleteInstanceAdmintokensOptions) (response *core.DetailedResponse, err error) {
-	err = core.ValidateNotNil(deleteInstanceAdmintokensOptions, "deleteInstanceAdmintokensOptions cannot be nil")
+// DeleteVaultAdmintokensWithContext is an alternate form of the DeleteVaultAdmintokens method which supports a Context parameter
+func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) DeleteVaultAdmintokensWithContext(ctx context.Context, deleteVaultAdmintokensOptions *DeleteVaultAdmintokensOptions) (response *core.DetailedResponse, err error) {
+	err = core.ValidateNotNil(deleteVaultAdmintokensOptions, "deleteVaultAdmintokensOptions cannot be nil")
 	if err != nil {
 		err = core.SDKErrorf(err, "", "unexpected-nil-param", common.GetComponentInfo())
 		return
 	}
-	err = core.ValidateStruct(deleteInstanceAdmintokensOptions, "deleteInstanceAdmintokensOptions")
+	err = core.ValidateStruct(deleteVaultAdmintokensOptions, "deleteVaultAdmintokensOptions")
 	if err != nil {
 		err = core.SDKErrorf(err, "", "struct-validation-error", common.GetComponentInfo())
 		return
 	}
 
 	pathParamsMap := map[string]string{
-		"id": *deleteInstanceAdmintokensOptions.ID,
+		"instance_id": *deleteVaultAdmintokensOptions.InstanceID,
 	}
 
 	builder := core.NewRequestBuilder(core.DELETE)
 	builder = builder.WithContext(ctx)
 	builder.EnableGzipCompression = secretsManagerInstanceManagement.GetEnableGzipCompression()
-	_, err = builder.ResolveRequestURL(secretsManagerInstanceManagement.Service.Options.URL, `/v2/instances/{id}/admintokens`, pathParamsMap)
+	_, err = builder.ResolveRequestURL(secretsManagerInstanceManagement.Service.Options.URL, `/v2/instances/{instance_id}/admintokens`, pathParamsMap)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
 	}
 
-	sdkHeaders := common.GetSdkHeaders("secrets_manager_instance_management", "V2", "DeleteInstanceAdmintokens")
+	sdkHeaders := common.GetSdkHeaders("secrets_manager_instance_management", "V2", "DeleteVaultAdmintokens")
 	for headerName, headerValue := range sdkHeaders {
 		builder.AddHeader(headerName, headerValue)
 	}
 
-	for headerName, headerValue := range deleteInstanceAdmintokensOptions.Headers {
+	for headerName, headerValue := range deleteVaultAdmintokensOptions.Headers {
 		builder.AddHeader(headerName, headerValue)
 	}
 
@@ -322,7 +323,7 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) Dele
 
 	response, err = secretsManagerInstanceManagement.Service.Request(request, nil)
 	if err != nil {
-		core.EnrichHTTPProblem(err, "delete_instance_admintokens", getServiceComponentInfo())
+		core.EnrichHTTPProblem(err, "delete_vault_admintokens", getServiceComponentInfo())
 		err = core.SDKErrorf(err, "", "http-request-err", common.GetComponentInfo())
 		return
 	}
@@ -352,13 +353,13 @@ func (secretsManagerInstanceManagement *SecretsManagerInstanceManagementV2) GetI
 	}
 
 	pathParamsMap := map[string]string{
-		"id": *getInstanceOptions.ID,
+		"instance_id": *getInstanceOptions.InstanceID,
 	}
 
 	builder := core.NewRequestBuilder(core.GET)
 	builder = builder.WithContext(ctx)
 	builder.EnableGzipCompression = secretsManagerInstanceManagement.GetEnableGzipCompression()
-	_, err = builder.ResolveRequestURL(secretsManagerInstanceManagement.Service.Options.URL, `/v2/instances/{id}`, pathParamsMap)
+	_, err = builder.ResolveRequestURL(secretsManagerInstanceManagement.Service.Options.URL, `/v2/instances/{instance_id}`, pathParamsMap)
 	if err != nil {
 		err = core.SDKErrorf(err, "", "url-resolve-error", common.GetComponentInfo())
 		return
@@ -884,7 +885,7 @@ func (options *CreateInstanceDestinationOptions) SetHeaders(param map[string]str
 // CreateVaultAdmintokenOptions : The CreateVaultAdmintoken options.
 type CreateVaultAdmintokenOptions struct {
 	// Secrets Manager instance ID.
-	ID *string `json:"id" validate:"required,ne="`
+	InstanceID *string `json:"instance_id" validate:"required,ne="`
 
 	// If true, returns a Vault response-wrapped token (wrapped_token). If false or absent, returns a plain admin token
 	// (token).
@@ -895,15 +896,15 @@ type CreateVaultAdmintokenOptions struct {
 }
 
 // NewCreateVaultAdmintokenOptions : Instantiate CreateVaultAdmintokenOptions
-func (*SecretsManagerInstanceManagementV2) NewCreateVaultAdmintokenOptions(id string) *CreateVaultAdmintokenOptions {
+func (*SecretsManagerInstanceManagementV2) NewCreateVaultAdmintokenOptions(instanceID string) *CreateVaultAdmintokenOptions {
 	return &CreateVaultAdmintokenOptions{
-		ID: core.StringPtr(id),
+		InstanceID: core.StringPtr(instanceID),
 	}
 }
 
-// SetID : Allow user to set ID
-func (_options *CreateVaultAdmintokenOptions) SetID(id string) *CreateVaultAdmintokenOptions {
-	_options.ID = core.StringPtr(id)
+// SetInstanceID : Allow user to set InstanceID
+func (_options *CreateVaultAdmintokenOptions) SetInstanceID(instanceID string) *CreateVaultAdmintokenOptions {
+	_options.InstanceID = core.StringPtr(instanceID)
 	return _options
 }
 
@@ -915,34 +916,6 @@ func (_options *CreateVaultAdmintokenOptions) SetResponseWrapping(responseWrappi
 
 // SetHeaders : Allow user to set Headers
 func (options *CreateVaultAdmintokenOptions) SetHeaders(param map[string]string) *CreateVaultAdmintokenOptions {
-	options.Headers = param
-	return options
-}
-
-// DeleteInstanceAdmintokensOptions : The DeleteInstanceAdmintokens options.
-type DeleteInstanceAdmintokensOptions struct {
-	// Secrets Manager instance ID.
-	ID *string `json:"id" validate:"required,ne="`
-
-	// Allows users to set headers on API requests.
-	Headers map[string]string
-}
-
-// NewDeleteInstanceAdmintokensOptions : Instantiate DeleteInstanceAdmintokensOptions
-func (*SecretsManagerInstanceManagementV2) NewDeleteInstanceAdmintokensOptions(id string) *DeleteInstanceAdmintokensOptions {
-	return &DeleteInstanceAdmintokensOptions{
-		ID: core.StringPtr(id),
-	}
-}
-
-// SetID : Allow user to set ID
-func (_options *DeleteInstanceAdmintokensOptions) SetID(id string) *DeleteInstanceAdmintokensOptions {
-	_options.ID = core.StringPtr(id)
-	return _options
-}
-
-// SetHeaders : Allow user to set Headers
-func (options *DeleteInstanceAdmintokensOptions) SetHeaders(param map[string]string) *DeleteInstanceAdmintokensOptions {
 	options.Headers = param
 	return options
 }
@@ -981,6 +954,34 @@ func (_options *DeleteInstanceDestinationOptions) SetDestinationID(destinationID
 
 // SetHeaders : Allow user to set Headers
 func (options *DeleteInstanceDestinationOptions) SetHeaders(param map[string]string) *DeleteInstanceDestinationOptions {
+	options.Headers = param
+	return options
+}
+
+// DeleteVaultAdmintokensOptions : The DeleteVaultAdmintokens options.
+type DeleteVaultAdmintokensOptions struct {
+	// Secrets Manager instance ID.
+	InstanceID *string `json:"instance_id" validate:"required,ne="`
+
+	// Allows users to set headers on API requests.
+	Headers map[string]string
+}
+
+// NewDeleteVaultAdmintokensOptions : Instantiate DeleteVaultAdmintokensOptions
+func (*SecretsManagerInstanceManagementV2) NewDeleteVaultAdmintokensOptions(instanceID string) *DeleteVaultAdmintokensOptions {
+	return &DeleteVaultAdmintokensOptions{
+		InstanceID: core.StringPtr(instanceID),
+	}
+}
+
+// SetInstanceID : Allow user to set InstanceID
+func (_options *DeleteVaultAdmintokensOptions) SetInstanceID(instanceID string) *DeleteVaultAdmintokensOptions {
+	_options.InstanceID = core.StringPtr(instanceID)
+	return _options
+}
+
+// SetHeaders : Allow user to set Headers
+func (options *DeleteVaultAdmintokensOptions) SetHeaders(param map[string]string) *DeleteVaultAdmintokensOptions {
 	options.Headers = param
 	return options
 }
@@ -1210,22 +1211,22 @@ func (options *GetInstanceDestinationOptions) SetHeaders(param map[string]string
 // GetInstanceOptions : The GetInstance options.
 type GetInstanceOptions struct {
 	// Secrets Manager instance ID.
-	ID *string `json:"id" validate:"required,ne="`
+	InstanceID *string `json:"instance_id" validate:"required,ne="`
 
 	// Allows users to set headers on API requests.
 	Headers map[string]string
 }
 
 // NewGetInstanceOptions : Instantiate GetInstanceOptions
-func (*SecretsManagerInstanceManagementV2) NewGetInstanceOptions(id string) *GetInstanceOptions {
+func (*SecretsManagerInstanceManagementV2) NewGetInstanceOptions(instanceID string) *GetInstanceOptions {
 	return &GetInstanceOptions{
-		ID: core.StringPtr(id),
+		InstanceID: core.StringPtr(instanceID),
 	}
 }
 
-// SetID : Allow user to set ID
-func (_options *GetInstanceOptions) SetID(id string) *GetInstanceOptions {
-	_options.ID = core.StringPtr(id)
+// SetInstanceID : Allow user to set InstanceID
+func (_options *GetInstanceOptions) SetInstanceID(instanceID string) *GetInstanceOptions {
+	_options.InstanceID = core.StringPtr(instanceID)
 	return _options
 }
 
