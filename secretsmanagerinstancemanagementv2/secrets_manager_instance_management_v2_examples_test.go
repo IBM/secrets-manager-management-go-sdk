@@ -246,22 +246,22 @@ var _ = Describe(`SecretsManagerInstanceManagementV2 Examples Tests`, func() {
 			Expect(response.StatusCode).To(Equal(200))
 			Expect(ibmCloudDatabaseDestination).ToNot(BeNil())
 		})
-		It(`DeleteInstanceAdmintokens request example`, func() {
-			// begin-delete_instance_admintokens
+		It(`DeleteVaultAdmintokens request example`, func() {
+			// begin-delete_vault_admintokens
 
-			deleteInstanceAdmintokensOptions := secretsManagerInstanceManagementService.NewDeleteInstanceAdmintokensOptions(
+			deleteVaultAdmintokensOptions := secretsManagerInstanceManagementService.NewDeleteVaultAdmintokensOptions(
 				"fe5c5c27-3e44-474a-9484-55892e12d6d1",
 			)
 
-			response, err := secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions)
+			response, err := secretsManagerInstanceManagementService.DeleteVaultAdmintokens(deleteVaultAdmintokensOptions)
 			if err != nil {
 				panic(err)
 			}
 			if response.StatusCode != 204 {
-				fmt.Printf("\nUnexpected response status code received from DeleteInstanceAdmintokens(): %d\n", response.StatusCode)
+				fmt.Printf("\nUnexpected response status code received from DeleteVaultAdmintokens(): %d\n", response.StatusCode)
 			}
 
-			// end-delete_instance_admintokens
+			// end-delete_vault_admintokens
 
 			Expect(err).To(BeNil())
 			Expect(response.StatusCode).To(Equal(204))

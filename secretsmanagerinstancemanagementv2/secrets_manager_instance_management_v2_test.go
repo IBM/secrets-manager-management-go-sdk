@@ -206,7 +206,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
@@ -274,7 +274,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
@@ -350,7 +350,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
@@ -371,7 +371,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
@@ -413,7 +413,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the CreateVaultAdmintokenOptions model
 				createVaultAdmintokenOptionsModel := new(secretsmanagerinstancemanagementv2.CreateVaultAdmintokenOptions)
-				createVaultAdmintokenOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				createVaultAdmintokenOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				createVaultAdmintokenOptionsModel.ResponseWrapping = core.BoolPtr(true)
 				createVaultAdmintokenOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
@@ -430,21 +430,21 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 			})
 		})
 	})
-	Describe(`DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptions *DeleteInstanceAdmintokensOptions)`, func() {
-		deleteInstanceAdmintokensPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/admintokens"
+	Describe(`DeleteVaultAdmintokens(deleteVaultAdmintokensOptions *DeleteVaultAdmintokensOptions)`, func() {
+		deleteVaultAdmintokensPath := "/v2/instances/fe5c5c27-3e44-474a-9484-55892e12d6d1/admintokens"
 		Context(`Using mock server endpoint`, func() {
 			BeforeEach(func() {
 				testServer = httptest.NewServer(http.HandlerFunc(func(res http.ResponseWriter, req *http.Request) {
 					defer GinkgoRecover()
 
 					// Verify the contents of the request
-					Expect(req.URL.EscapedPath()).To(Equal(deleteInstanceAdmintokensPath))
+					Expect(req.URL.EscapedPath()).To(Equal(deleteVaultAdmintokensPath))
 					Expect(req.Method).To(Equal("DELETE"))
 
 					res.WriteHeader(204)
 				}))
 			})
-			It(`Invoke DeleteInstanceAdmintokens successfully`, func() {
+			It(`Invoke DeleteVaultAdmintokens successfully`, func() {
 				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -453,21 +453,21 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
 				// Invoke operation with nil options model (negative test)
-				response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(nil)
+				response, operationErr := secretsManagerInstanceManagementService.DeleteVaultAdmintokens(nil)
 				Expect(operationErr).NotTo(BeNil())
 				Expect(response).To(BeNil())
 
-				// Construct an instance of the DeleteInstanceAdmintokensOptions model
-				deleteInstanceAdmintokensOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions)
-				deleteInstanceAdmintokensOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
-				deleteInstanceAdmintokensOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the DeleteVaultAdmintokensOptions model
+				deleteVaultAdmintokensOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteVaultAdmintokensOptions)
+				deleteVaultAdmintokensOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				deleteVaultAdmintokensOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
-				response, operationErr = secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptionsModel)
+				response, operationErr = secretsManagerInstanceManagementService.DeleteVaultAdmintokens(deleteVaultAdmintokensOptionsModel)
 				Expect(operationErr).To(BeNil())
 				Expect(response).ToNot(BeNil())
 			})
-			It(`Invoke DeleteInstanceAdmintokens with error: Operation validation and request error`, func() {
+			It(`Invoke DeleteVaultAdmintokens with error: Operation validation and request error`, func() {
 				secretsManagerInstanceManagementService, serviceErr := secretsmanagerinstancemanagementv2.NewSecretsManagerInstanceManagementV2(&secretsmanagerinstancemanagementv2.SecretsManagerInstanceManagementV2Options{
 					URL:           testServer.URL,
 					Authenticator: &core.NoAuthAuthenticator{},
@@ -475,21 +475,21 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(serviceErr).To(BeNil())
 				Expect(secretsManagerInstanceManagementService).ToNot(BeNil())
 
-				// Construct an instance of the DeleteInstanceAdmintokensOptions model
-				deleteInstanceAdmintokensOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions)
-				deleteInstanceAdmintokensOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
-				deleteInstanceAdmintokensOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
+				// Construct an instance of the DeleteVaultAdmintokensOptions model
+				deleteVaultAdmintokensOptionsModel := new(secretsmanagerinstancemanagementv2.DeleteVaultAdmintokensOptions)
+				deleteVaultAdmintokensOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				deleteVaultAdmintokensOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
 				Expect(err).To(BeNil())
-				response, operationErr := secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptionsModel)
+				response, operationErr := secretsManagerInstanceManagementService.DeleteVaultAdmintokens(deleteVaultAdmintokensOptionsModel)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(operationErr.Error()).To(ContainSubstring(core.ERRORMSG_SERVICE_URL_MISSING))
 				Expect(response).To(BeNil())
-				// Construct a second instance of the DeleteInstanceAdmintokensOptions model with no property values
-				deleteInstanceAdmintokensOptionsModelNew := new(secretsmanagerinstancemanagementv2.DeleteInstanceAdmintokensOptions)
+				// Construct a second instance of the DeleteVaultAdmintokensOptions model with no property values
+				deleteVaultAdmintokensOptionsModelNew := new(secretsmanagerinstancemanagementv2.DeleteVaultAdmintokensOptions)
 				// Invoke operation with invalid model (negative test)
-				response, operationErr = secretsManagerInstanceManagementService.DeleteInstanceAdmintokens(deleteInstanceAdmintokensOptionsModelNew)
+				response, operationErr = secretsManagerInstanceManagementService.DeleteVaultAdmintokens(deleteVaultAdmintokensOptionsModelNew)
 				Expect(operationErr).ToNot(BeNil())
 				Expect(response).To(BeNil())
 			})
@@ -523,7 +523,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Expect response parsing to fail since we are receiving a text/plain response
 				result, response, operationErr := secretsManagerInstanceManagementService.GetInstance(getInstanceOptionsModel)
@@ -574,7 +574,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with a Context to test a timeout error
@@ -633,7 +633,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation with valid options model (positive test)
@@ -653,7 +653,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 				// Invoke operation with empty URL (negative test)
 				err := secretsManagerInstanceManagementService.SetServiceURL("")
@@ -694,7 +694,7 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 
 				// Construct an instance of the GetInstanceOptions model
 				getInstanceOptionsModel := new(secretsmanagerinstancemanagementv2.GetInstanceOptions)
-				getInstanceOptionsModel.ID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				getInstanceOptionsModel.InstanceID = core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.Headers = map[string]string{"x-custom-header": "x-custom-value"}
 
 				// Invoke operation
@@ -1970,25 +1970,15 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 			})
 			It(`Invoke NewCreateVaultAdmintokenOptions successfully`, func() {
 				// Construct an instance of the CreateVaultAdmintokenOptions model
-				id := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
-				createVaultAdmintokenOptionsModel := secretsManagerInstanceManagementService.NewCreateVaultAdmintokenOptions(id)
-				createVaultAdmintokenOptionsModel.SetID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
+				createVaultAdmintokenOptionsModel := secretsManagerInstanceManagementService.NewCreateVaultAdmintokenOptions(instanceID)
+				createVaultAdmintokenOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				createVaultAdmintokenOptionsModel.SetResponseWrapping(true)
 				createVaultAdmintokenOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(createVaultAdmintokenOptionsModel).ToNot(BeNil())
-				Expect(createVaultAdmintokenOptionsModel.ID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
+				Expect(createVaultAdmintokenOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(createVaultAdmintokenOptionsModel.ResponseWrapping).To(Equal(core.BoolPtr(true)))
 				Expect(createVaultAdmintokenOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
-			})
-			It(`Invoke NewDeleteInstanceAdmintokensOptions successfully`, func() {
-				// Construct an instance of the DeleteInstanceAdmintokensOptions model
-				id := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
-				deleteInstanceAdmintokensOptionsModel := secretsManagerInstanceManagementService.NewDeleteInstanceAdmintokensOptions(id)
-				deleteInstanceAdmintokensOptionsModel.SetID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
-				deleteInstanceAdmintokensOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
-				Expect(deleteInstanceAdmintokensOptionsModel).ToNot(BeNil())
-				Expect(deleteInstanceAdmintokensOptionsModel.ID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
-				Expect(deleteInstanceAdmintokensOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewDeleteInstanceDestinationOptions successfully`, func() {
 				// Construct an instance of the DeleteInstanceDestinationOptions model
@@ -2002,6 +1992,16 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 				Expect(deleteInstanceDestinationOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(deleteInstanceDestinationOptionsModel.DestinationID).To(Equal(core.StringPtr("b2c3d4e5-f6a7-8901-bcde-f12345678901")))
 				Expect(deleteInstanceDestinationOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
+			})
+			It(`Invoke NewDeleteVaultAdmintokensOptions successfully`, func() {
+				// Construct an instance of the DeleteVaultAdmintokensOptions model
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
+				deleteVaultAdmintokensOptionsModel := secretsManagerInstanceManagementService.NewDeleteVaultAdmintokensOptions(instanceID)
+				deleteVaultAdmintokensOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				deleteVaultAdmintokensOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
+				Expect(deleteVaultAdmintokensOptionsModel).ToNot(BeNil())
+				Expect(deleteVaultAdmintokensOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
+				Expect(deleteVaultAdmintokensOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewGetInstanceDestinationOptions successfully`, func() {
 				// Construct an instance of the GetInstanceDestinationOptions model
@@ -2018,12 +2018,12 @@ var _ = Describe(`SecretsManagerInstanceManagementV2`, func() {
 			})
 			It(`Invoke NewGetInstanceOptions successfully`, func() {
 				// Construct an instance of the GetInstanceOptions model
-				id := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
-				getInstanceOptionsModel := secretsManagerInstanceManagementService.NewGetInstanceOptions(id)
-				getInstanceOptionsModel.SetID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
+				instanceID := "fe5c5c27-3e44-474a-9484-55892e12d6d1"
+				getInstanceOptionsModel := secretsManagerInstanceManagementService.NewGetInstanceOptions(instanceID)
+				getInstanceOptionsModel.SetInstanceID("fe5c5c27-3e44-474a-9484-55892e12d6d1")
 				getInstanceOptionsModel.SetHeaders(map[string]string{"foo": "bar"})
 				Expect(getInstanceOptionsModel).ToNot(BeNil())
-				Expect(getInstanceOptionsModel.ID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
+				Expect(getInstanceOptionsModel.InstanceID).To(Equal(core.StringPtr("fe5c5c27-3e44-474a-9484-55892e12d6d1")))
 				Expect(getInstanceOptionsModel.Headers).To(Equal(map[string]string{"foo": "bar"}))
 			})
 			It(`Invoke NewListInstanceDestinationsOptions successfully`, func() {
